@@ -1,0 +1,32 @@
+{
+  "name": "webauthn-p256",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm clean && pnpm build:cjs && pnpm build:esm && pnpm build:types",
+    "build:cjs": "tsc --project ./tsconfig.build.json --module commonjs --outDir ./src/_cjs --removeComments --verbatimModuleSyntax false && printf '{\"type\":\"commonjs\"}' > ./src/_cjs/package.json",
+    "build:esm": "tsc --project ./tsconfig.build.json --module es2020 --outDir ./src/_esm && printf '{\"type\": \"module\",\"sideEffects\":false}' > ./src/_esm/package.json",
+    "build:types": "tsc --project ./tsconfig.build.json --module esnext --declarationDir ./src/_types --emitDeclarationOnly --declaration --declarationMap",
+    "changeset": "changeset",
+    "changeset:release": "pnpm build && changeset publish",
+    "changeset:version": "changeset version && pnpm install --lockfile-only",
+    "clean": "rimraf src/_esm src/_cjs src/_types ./tsconfig.build.tsbuildinfo src/tsconfig.build.tsbuildinfo",
+    "lint": "biome check . --apply",
+    "postinstall": "pnpm build",
+    "preconstruct": "tsx ./.scripts/preconstruct.ts",
+    "test": "vitest --testTimeout 10000",
+    "test:cov": "vitest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.3",
+    "@types/node": "^20.14.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.15.7",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "packageManager": "pnpm@9.1.0"
+}
