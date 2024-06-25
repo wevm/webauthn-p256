@@ -15,11 +15,17 @@
       "default": "./_cjs/index.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "@noble/curves": "^1.4.0",
+    "@noble/hashes": "^1.4.0"
+  },
   "license": "MIT",
   "homepage": "https://wevm.dev",
   "repository": "wevm/webauthn-p256",
-  "authors": ["awkweb", "jxom"],
+  "authors": [
+    "awkweb",
+    "jxom"
+  ],
   "funding": [
     {
       "type": "github",

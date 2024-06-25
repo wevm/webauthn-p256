@@ -1,3 +1,1 @@
-export function foo() {
-  return 'test'
-}
+export { createCredential } from './credential.js'
