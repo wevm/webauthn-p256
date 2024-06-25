@@ -1,3 +1,4 @@
+import type { Hex } from '../types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
@@ -7,21 +8,21 @@ import {
 } from './conversion.js'
 
 export type ParseCredentialPublicKeyOptions = {
-  uncompressed?: boolean
+  compressed?: boolean | undefined
 }
 
 export async function parseCredentialPublicKey(
   cPublicKey: ArrayBuffer,
   options: ParseCredentialPublicKeyOptions = {},
-): Promise<string> {
-  const { uncompressed } = options
+): Promise<Hex> {
+  const { compressed } = options
   const base64Url = bytesToBase64Url(new Uint8Array(cPublicKey))
   const bytes = base64UrlToBytes(base64Url)
   const cryptoKey = await bytesToCryptoKey(bytes)
   const publicKey = await cryptoKeyToBytes(cryptoKey)
   const result = (() => {
-    if (uncompressed) return publicKey
-    return publicKey.slice(1)
+    if (compressed) return publicKey.slice(1)
+    return publicKey
   })()
   return bytesToHex(result)
 }

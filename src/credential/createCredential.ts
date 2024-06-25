@@ -1,3 +1,4 @@
+import type { Hex } from '../types.js'
 import { parseCredentialPublicKey } from '../utils/publicKey.js'
 import {
   type GetCredentialCreationOptionsParameters,
@@ -7,8 +8,8 @@ import {
 export type CreateCredentialParameters = GetCredentialCreationOptionsParameters
 export type CreateCredentialReturnType = {
   id: PublicKeyCredential['id']
-  publicKey: string
-  publicKeyCompressed: string
+  publicKey: Hex
+  publicKeyCompressed: Hex
 }
 
 /**
@@ -28,17 +29,13 @@ export async function createCredential(
       options,
     )) as PublicKeyCredential
     if (!credential) throw new Error('credential creation failed.')
-    const cPublicKey = new Uint8Array(
-      (credential.response as any).getPublicKey(),
+    const publicKey = await parseCredentialPublicKey(
+      new Uint8Array((credential.response as any).getPublicKey()),
     )
-    const publicKey = await parseCredentialPublicKey(cPublicKey, {
-      uncompressed: true,
-    })
-
     return {
       id: credential.id,
       publicKey,
-      publicKeyCompressed: publicKey.slice(1),
+      publicKeyCompressed: `0x${publicKey.slice(4)}`,
     }
   } catch (error) {
     throw new Error('credential creation failed.', { cause: error })
