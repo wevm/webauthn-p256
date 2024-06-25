@@ -84,10 +84,14 @@ function parseAsn1Signature(bytes: Uint8Array) {
   const rStart = usignature[4] === 0 ? 5 : 4
   const rEnd = rStart + 32
   const sStart = usignature[rEnd + 2] === 0 ? rEnd + 3 : rEnd + 2
-  const r = usignature.slice(rStart, rEnd)
-  const s = usignature.slice(sStart)
+  const r = BigInt(bytesToHex(usignature.slice(rStart, rEnd)))
+  let s = BigInt(bytesToHex(usignature.slice(sStart)))
+  const n = BigInt(
+    '0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551',
+  )
+  if (s > n / 2n) s = n - s
   return {
-    r: BigInt(bytesToHex(r)),
-    s: BigInt(bytesToHex(s)),
+    r,
+    s,
   }
 }
