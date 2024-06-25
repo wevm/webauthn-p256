@@ -1,12 +1,15 @@
-import { expect, test } from 'vitest'
-import { getCredentialCreationOptions } from './getCredentialCreationOptions.js'
+import { describe, expect, test } from 'vitest'
+import { getCredentialCreationOptions } from './credential.js'
 
-test('default', () => {
-  expect(
-    getCredentialCreationOptions({
-      name: 'Foo',
-    }),
-  ).toMatchInlineSnapshot(`
+describe.todo('createCredential')
+
+describe('getCredentialCreationOptions', () => {
+  test('default', () => {
+    expect(
+      getCredentialCreationOptions({
+        name: 'Foo',
+      }),
+    ).toMatchInlineSnapshot(`
     {
       "publicKey": {
         "attestation": "none",
@@ -85,15 +88,15 @@ test('default', () => {
       },
     }
   `)
-})
+  })
 
-test('args: excludeCredentialIds', () => {
-  expect(
-    getCredentialCreationOptions({
-      excludeCredentialIds: ['pzpQZRhXUkboj-b_srH0X42XJS7Ai2ZXd6-9lnFULig'],
-      name: 'Foo',
-    }),
-  ).toMatchInlineSnapshot(`
+  test('args: excludeCredentialIds', () => {
+    expect(
+      getCredentialCreationOptions({
+        excludeCredentialIds: ['pzpQZRhXUkboj-b_srH0X42XJS7Ai2ZXd6-9lnFULig'],
+        name: 'Foo',
+      }),
+    ).toMatchInlineSnapshot(`
     {
       "publicKey": {
         "attestation": "none",
@@ -211,16 +214,16 @@ test('args: excludeCredentialIds', () => {
       },
     }
   `)
-})
+  })
 
-test('args: user', () => {
-  expect(
-    getCredentialCreationOptions({
-      user: {
-        name: 'Foo',
-      },
-    }),
-  ).toMatchInlineSnapshot(`
+  test('args: user', () => {
+    expect(
+      getCredentialCreationOptions({
+        user: {
+          name: 'Foo',
+        },
+      }),
+    ).toMatchInlineSnapshot(`
     {
       "publicKey": {
         "attestation": "none",
@@ -299,4 +302,5 @@ test('args: user', () => {
       },
     }
   `)
+  })
 })

@@ -2,14 +2,14 @@ import {
   bytesToHex as bytesToHex_noble,
   hexToBytes as hexToBytes_noble,
 } from '@noble/hashes/utils'
-import type { Hex } from '../types.js'
+import type { Hex } from './types.js'
 
 export function bytesToHex(bytes: Uint8Array): Hex {
   return `0x${bytesToHex_noble(bytes)}`
 }
 
 export function hexToBytes(value: Hex): Uint8Array {
-  return hexToBytes_noble(`0x${value}`)
+  return hexToBytes_noble(value.slice(2))
 }
 
 export function base64UrlToBytes(base64Url: string): Uint8Array {

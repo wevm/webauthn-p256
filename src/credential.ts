@@ -1,9 +1,52 @@
 import { keccak_256 } from '@noble/hashes/sha3'
 import { toBytes } from '@noble/hashes/utils'
 
-import type { OneOf } from '../types.js'
-import { base64UrlToBytes } from '../utils/conversion.js'
-import { createChallenge } from './constants.js'
+import { base64UrlToBytes } from './conversion.js'
+import { parseCredentialPublicKey } from './publicKey.js'
+import type { Hex, OneOf } from './types.js'
+
+// Challenge for credential creation – random 16 bytes.
+export const createChallenge = Uint8Array.from([
+  105, 171, 180, 181, 160, 222, 75, 198, 42, 42, 32, 31, 141, 37, 186, 233,
+])
+
+export type CreateCredentialParameters = GetCredentialCreationOptionsParameters
+
+export type CreateCredentialReturnType = {
+  id: PublicKeyCredential['id']
+  publicKey: Hex
+  publicKeyCompressed: Hex
+}
+
+/**
+ * Creates a new credential, which can be stored and later used for signing.
+ *
+ * @example
+ * ```ts
+ * const credential = await createCredential({ name: 'Example' })
+ * ```
+ */
+export async function createCredential(
+  parameters: CreateCredentialParameters,
+): Promise<CreateCredentialReturnType> {
+  const options = getCredentialCreationOptions(parameters)
+  try {
+    const credential = (await window.navigator.credentials.create(
+      options,
+    )) as PublicKeyCredential
+    if (!credential) throw new Error('credential creation failed.')
+    const publicKey = await parseCredentialPublicKey(
+      new Uint8Array((credential.response as any).getPublicKey()),
+    )
+    return {
+      id: credential.id,
+      publicKey,
+      publicKeyCompressed: `0x${publicKey.slice(4)}`,
+    }
+  } catch (error) {
+    throw new Error('credential creation failed.', { cause: error })
+  }
+}
 
 export type GetCredentialCreationOptionsParameters = {
   /**

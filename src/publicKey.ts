@@ -1,11 +1,12 @@
-import type { Hex } from '../types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
   bytesToCryptoKey,
   bytesToHex,
   cryptoKeyToBytes,
+  hexToBytes,
 } from './conversion.js'
+import type { Hex } from './types.js'
 
 export type ParseCredentialPublicKeyOptions = {
   compressed?: boolean | undefined
@@ -32,9 +33,10 @@ type PublicKey = {
   y: bigint
 }
 
-export function parsePublicKey(publicKey: Uint8Array): PublicKey {
-  const offset = publicKey[0] === 4 ? 1 : 0
-  const x = publicKey.slice(offset, 32 + offset)
-  const y = publicKey.slice(32 + offset, 64 + offset)
+export function parsePublicKey(publicKey: Hex): PublicKey {
+  const bytes = hexToBytes(publicKey)
+  const offset = bytes[0] === 4 ? 1 : 0
+  const x = bytes.slice(offset, 32 + offset)
+  const y = bytes.slice(32 + offset, 64 + offset)
   return { x: BigInt(bytesToHex(x)), y: BigInt(bytesToHex(y)) }
 }
