@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "webauthn-p256": "workspace:*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "webauthn-p256": "workspace:*",
+    "viem": "latest"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

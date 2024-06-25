@@ -4,6 +4,11 @@ export type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {}
 
+export type PublicKey = {
+  x: bigint
+  y: bigint
+}
+
 export type OneOf<
   union extends object,
   fallback extends object | undefined = undefined,

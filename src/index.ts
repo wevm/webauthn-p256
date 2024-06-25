@@ -21,5 +21,13 @@ export {
 export {
   type ParseCredentialPublicKeyOptions,
   parseCredentialPublicKey,
+  parsePublicKey,
 } from './publicKey.js'
-export type { Hex } from './types.js'
+export {
+  type GetCredentialSignRequestOptionsParameters,
+  type GetCredentialSignRequestOptionsReturnType,
+  getCredentialSignRequestOptions,
+  type SignParameters,
+  sign,
+} from './signature.js'
+export type { Hex, PublicKey } from './types.js'

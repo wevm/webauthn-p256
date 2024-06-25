@@ -6,7 +6,7 @@ import {
   cryptoKeyToBytes,
   hexToBytes,
 } from './conversion.js'
-import type { Hex } from './types.js'
+import type { Hex, PublicKey } from './types.js'
 
 export type ParseCredentialPublicKeyOptions = {
   compressed?: boolean | undefined
@@ -26,11 +26,6 @@ export async function parseCredentialPublicKey(
     return publicKey
   })()
   return bytesToHex(result)
-}
-
-type PublicKey = {
-  x: bigint
-  y: bigint
 }
 
 export function parsePublicKey(publicKey: Hex): PublicKey {
