@@ -10,11 +10,13 @@
     "changeset:release": "pnpm build && changeset publish",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
     "clean": "rimraf src/_esm src/_cjs src/_types ./tsconfig.build.tsbuildinfo src/tsconfig.build.tsbuildinfo",
+    "dev": "pnpm preconstruct && pnpm playground",
     "lint": "biome check . --apply",
+    "playground": "pnpm --filter playground dev --open",
     "postinstall": "pnpm build",
     "preconstruct": "tsx ./.scripts/preconstruct.ts",
-    "test": "vitest --testTimeout 10000",
-    "test:cov": "vitest --coverage",
+    "test": "vitest -c ./test/vitest.config.ts",
+    "test:cov": "vitest -c ./test/vitest.config.ts --coverage",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
