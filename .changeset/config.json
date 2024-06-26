@@ -8,7 +8,7 @@
   ],
   "commit": false,
   "fixed": [],
-  "ignore": [],
+  "ignore": ["playground"],
   "linked": [],
   "updateInternalDependencies": "patch"
 }

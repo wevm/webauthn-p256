@@ -2,8 +2,7 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "playground": "0.0.0",
-    "webauthn-p256": "0.0.1"
+    "webauthn-p256": "0.0.0"
   },
   "changesets": []
 }
