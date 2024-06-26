@@ -22,7 +22,17 @@ export {
   sign,
 } from './sign.js'
 export { type VerifyParameters, verify } from './verify.js'
-export type { Hex, PublicKey, WebAuthnSignature } from './types.js'
+export type {
+  Credential,
+  CredentialCreationOptions,
+  CredentialRequestOptions,
+  Hex,
+  P256Credential,
+  PublicKey,
+  PublicKeyCredentialCreationOptions,
+  PublicKeyCredential,
+  WebAuthnSignature,
+} from './types.js'
 export {
   base64ToBase64Url,
   base64ToUtf8,
