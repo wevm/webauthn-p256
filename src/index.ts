@@ -6,6 +6,7 @@ export {
   type GetCredentialCreationOptionsReturnType,
   getCredentialCreationOptions,
 } from './credential.js'
+
 export {
   type ParseCredentialPublicKeyOptions,
   parseCredentialPublicKey,
@@ -13,6 +14,7 @@ export {
   type SerializePublicKeyOptions,
   serializePublicKey,
 } from './publicKey.js'
+
 export {
   type GetCredentialSignRequestOptionsParameters,
   type GetCredentialSignRequestOptionsReturnType,
@@ -21,7 +23,7 @@ export {
   type SignReturnType,
   sign,
 } from './sign.js'
-export { type VerifyParameters, verify } from './verify.js'
+
 export type {
   Credential,
   CredentialCreationOptions,
@@ -33,6 +35,7 @@ export type {
   PublicKeyCredential,
   WebAuthnSignature,
 } from './types.js'
+
 export {
   base64ToBase64Url,
   base64ToUtf8,
@@ -45,3 +48,5 @@ export {
   hexToBytes,
   utf8ToBase64,
 } from './utils.js'
+
+export { type VerifyParameters, verify } from './verify.js'
