@@ -1,9 +1,9 @@
 export type Hex = `0x${string}`
 
-export type PublicKey = {
+export type PublicKey<compressed extends boolean = boolean> = {
   x: bigint
   y: bigint
-}
+} & (compressed extends true ? { prefix: number } : { prefix?: undefined })
 
 export type WebAuthnSignature = {
   authenticatorData: Hex

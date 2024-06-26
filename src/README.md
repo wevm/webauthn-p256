@@ -43,7 +43,7 @@ We can also verify WebAuthn signatures onchain via contracts that expose a WebAu
 The example below uses [Viem](https://viem.sh) to call the `verify` function on the [`WebAuthn.sol` contract](https://github.com/base-org/webauthn-sol/blob/main/src/WebAuthn.sol#L105). However, in a real world scenario, a contract implementing the WebAuthn verifier interface will call the `verify` function (e.g. a `isValidSignature` interface on an ERC-4337 Smart Wallet).
 
 ```ts
-import { createCredential, parsePublicKey, sign } from 'webauthn-p256'
+import { createCredential, sign } from 'webauthn-p256'
 import { createPublicClient, http } from 'viem'
 import { mainnet } from 'viem/chains'
 
@@ -64,13 +64,17 @@ const signature = await sign({
   hash
 })
 
-const { x, y } = parsePublicKey(credential.publicKey)
-
 const verified = await client.readContract({
   abi,
   code,
   functionName: 'verify',
-  args: [hash, true, signature, publicKey.x, publicKey.y],
+  args: [
+    hash,
+    true,
+    signature,
+    credential.publicKey.x,
+    credential.publicKey.y,
+  ],
 })
 ```
 

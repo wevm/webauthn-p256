@@ -2,7 +2,7 @@ import { keccak_256 } from '@noble/hashes/sha3'
 import { toBytes } from '@noble/hashes/utils'
 
 import { parseCredentialPublicKey } from './publicKey.js'
-import type { Hex, OneOf } from './types.js'
+import type { OneOf, PublicKey } from './types.js'
 import { base64UrlToBytes } from './utils.js'
 
 // Challenge for credential creation – random 16 bytes.
@@ -14,8 +14,7 @@ export type CreateCredentialParameters = GetCredentialCreationOptionsParameters
 
 export type CreateCredentialReturnType = {
   id: PublicKeyCredential['id']
-  publicKey: Hex
-  publicKeyCompressed: Hex
+  publicKey: PublicKey
 }
 
 /**
@@ -41,7 +40,6 @@ export async function createCredential(
     return {
       id: credential.id,
       publicKey,
-      publicKeyCompressed: `0x${publicKey.slice(4)}`,
     }
   } catch (error) {
     throw new Error('credential creation failed.', { cause: error })

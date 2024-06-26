@@ -10,6 +10,8 @@ export {
   type ParseCredentialPublicKeyOptions,
   parseCredentialPublicKey,
   parsePublicKey,
+  type SerializePublicKeyOptions,
+  serializePublicKey,
 } from './publicKey.js'
 export {
   type GetCredentialSignRequestOptionsParameters,

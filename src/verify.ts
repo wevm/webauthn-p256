@@ -1,11 +1,10 @@
 import { secp256r1 } from '@noble/curves/p256'
 import { concatBytes, utf8ToBytes } from '@noble/hashes/utils'
-import { parsePublicKey } from './publicKey.js'
-import type { Hex, WebAuthnSignature } from './types.js'
+import type { PublicKey, WebAuthnSignature } from './types.js'
 import { hexToBytes } from './utils.js'
 
 export type VerifyParameters = {
-  publicKey: Hex
+  publicKey: PublicKey
   signature: WebAuthnSignature
 }
 
@@ -36,10 +35,8 @@ export async function verify(
     .addRecoveryBit(1)
     .recoverPublicKey(messageHash)
 
-  const { x, y } = parsePublicKey(publicKey)
-
   return (
-    (recovered_0.x === x && recovered_0.y === y) ||
-    (recovered_1.x === x && recovered_1.y === y)
+    (recovered_0.x === publicKey.x && recovered_0.y === publicKey.y) ||
+    (recovered_1.x === publicKey.x && recovered_1.y === publicKey.y)
   )
 }

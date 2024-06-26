@@ -6,7 +6,7 @@ import {
   type Hex,
   type WebAuthnSignature,
   createCredential,
-  parsePublicKey,
+  serializePublicKey,
   sign,
   verify,
 } from 'webauthn-p256'
@@ -21,10 +21,6 @@ export function App() {
   const [credential, setCredential] = useState<CreateCredentialReturnType>()
   const [signature, setSignature] = useState<WebAuthnSignature>()
   const [verified, setVerified] = useState<boolean>()
-
-  const publicKey = credential?.publicKey
-    ? parsePublicKey(credential?.publicKey)
-    : undefined
 
   return (
     <div>
@@ -54,13 +50,13 @@ export function App() {
           <br />
           {credential.id}
           <br />
+          <br />
           <strong>Public Key: </strong>
           <br />
-          {credential.publicKeyCompressed}
+          <pre>{stringify(credential.publicKey, null, 2)}</pre>
+          <strong>Public Key (serialized): </strong>
           <br />
-          <strong>x:</strong> {publicKey?.x.toString()}
-          <br />
-          <strong>y:</strong> {publicKey?.y.toString()}
+          <pre>{serializePublicKey(credential.publicKey)}</pre>
         </div>
       )}
       <br />
@@ -96,7 +92,7 @@ export function App() {
             <pre>{stringify(signature, null, 2)}</pre>
           </div>
         )}
-        {signature && credential && publicKey && (
+        {signature && credential && (
           <div>
             <br />
             <hr />
@@ -134,7 +130,13 @@ export function App() {
                       abi: webauthn.abi,
                       code: webauthn.bytecode,
                       functionName: 'verify',
-                      args: [digest, true, signature, publicKey.x, publicKey.y],
+                      args: [
+                        digest,
+                        true,
+                        signature,
+                        credential.publicKey.x,
+                        credential.publicKey.y,
+                      ],
                     })
                   return verify({
                     publicKey: credential.publicKey,
