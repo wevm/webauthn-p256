@@ -5,7 +5,7 @@ export type PublicKey = {
   y: bigint
 }
 
-export type WebAuthnAuth = {
+export type WebAuthnSignature = {
   authenticatorData: Hex
   challengeIndex: bigint
   clientDataJSON: string
