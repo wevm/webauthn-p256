@@ -1,16 +1,4 @@
 export {
-  base64ToBase64Url,
-  base64ToUtf8,
-  base64UrlToBase64,
-  base64UrlToBytes,
-  bytesToBase64Url,
-  bytesToCryptoKey,
-  bytesToHex,
-  cryptoKeyToBytes,
-  hexToBytes,
-  utf8ToBase64,
-} from './conversion.js'
-export {
   type CreateCredentialParameters,
   type CreateCredentialReturnType,
   createCredential,
@@ -28,6 +16,20 @@ export {
   type GetCredentialSignRequestOptionsReturnType,
   getCredentialSignRequestOptions,
   type SignParameters,
+  type SignReturnType,
   sign,
-} from './signature.js'
-export type { Hex, PublicKey } from './types.js'
+} from './sign.js'
+export { type VerifyParameters, verify } from './verify.js'
+export type { Hex, PublicKey, WebAuthnSignature } from './types.js'
+export {
+  base64ToBase64Url,
+  base64ToUtf8,
+  base64UrlToBase64,
+  base64UrlToBytes,
+  bytesToBase64Url,
+  bytesToCryptoKey,
+  bytesToHex,
+  cryptoKeyToBytes,
+  hexToBytes,
+  utf8ToBase64,
+} from './utils.js'

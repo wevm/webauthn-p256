@@ -1,13 +1,26 @@
 export type Hex = `0x${string}`
 
-export type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
-
 export type PublicKey = {
   x: bigint
   y: bigint
 }
+
+export type WebAuthnAuth = {
+  authenticatorData: Hex
+  challengeIndex: bigint
+  clientDataJSON: string
+  typeIndex: bigint
+  r: bigint
+  s: bigint
+}
+
+////////////////////////////////////////////////////////////////////////
+// Utilities
+////////////////////////////////////////////////////////////////////////
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
 
 export type OneOf<
   union extends object,

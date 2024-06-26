@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { hexToBytes } from './conversion.js'
 import { parseCredentialPublicKey, parsePublicKey } from './publicKey.js'
+import { hexToBytes } from './utils.js'
 
 describe('parseCredentialPublicKey', () => {
   test('default', async () => {

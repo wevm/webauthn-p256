@@ -1,9 +1,9 @@
 import { keccak_256 } from '@noble/hashes/sha3'
 import { toBytes } from '@noble/hashes/utils'
 
-import { base64UrlToBytes } from './conversion.js'
 import { parseCredentialPublicKey } from './publicKey.js'
 import type { Hex, OneOf } from './types.js'
+import { base64UrlToBytes } from './utils.js'
 
 // Challenge for credential creation – random 16 bytes.
 export const createChallenge = Uint8Array.from([

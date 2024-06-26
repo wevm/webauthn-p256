@@ -1,19 +1,18 @@
+import type { Hex, WebAuthnSignature } from './types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
   bytesToHex,
   hexToBytes,
-} from './conversion.js'
-import type { Hex } from './types.js'
+} from './utils.js'
 
 export type SignParameters = GetCredentialSignRequestOptionsParameters
 
-export type SignReturnType = {
-  authenticatorData: Hex
-  clientDataJSON: string
-}
+export type SignReturnType = WebAuthnSignature
 
-export async function sign(parameters: SignParameters) {
+export async function sign(
+  parameters: SignParameters,
+): Promise<SignReturnType> {
   const options = getCredentialSignRequestOptions(parameters)
   try {
     const credential = (await window.navigator.credentials.get(
@@ -80,18 +79,17 @@ export function getCredentialSignRequestOptions(
 }
 
 function parseAsn1Signature(bytes: Uint8Array) {
-  const usignature = new Uint8Array(bytes)
-  const rStart = usignature[4] === 0 ? 5 : 4
-  const rEnd = rStart + 32
-  const sStart = usignature[rEnd + 2] === 0 ? rEnd + 3 : rEnd + 2
-  const r = BigInt(bytesToHex(usignature.slice(rStart, rEnd)))
-  let s = BigInt(bytesToHex(usignature.slice(sStart)))
+  const r_start = bytes[4] === 0 ? 5 : 4
+  const r_end = r_start + 32
+  const s_start = bytes[r_end + 2] === 0 ? r_end + 3 : r_end + 2
+
+  const r = BigInt(bytesToHex(bytes.slice(r_start, r_end)))
+  const s = BigInt(bytesToHex(bytes.slice(s_start)))
   const n = BigInt(
     '0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551',
   )
-  if (s > n / 2n) s = n - s
   return {
     r,
-    s,
+    s: s > n / 2n ? n - s : s,
   }
 }

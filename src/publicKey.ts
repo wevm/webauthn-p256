@@ -1,3 +1,4 @@
+import type { Hex, PublicKey } from './types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
@@ -5,8 +6,7 @@ import {
   bytesToHex,
   cryptoKeyToBytes,
   hexToBytes,
-} from './conversion.js'
-import type { Hex, PublicKey } from './types.js'
+} from './utils.js'
 
 export type ParseCredentialPublicKeyOptions = {
   compressed?: boolean | undefined
