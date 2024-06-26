@@ -74,7 +74,7 @@ export function App() {
             const digest = formData.get('digest') as Hex
 
             const signature = await sign({
-              digest,
+              hash: digest,
               credentialId: credential?.id,
             })
             setSignature(signature)

@@ -46,7 +46,7 @@ export async function sign(
 
 export type GetCredentialSignRequestOptionsParameters = {
   credentialId?: string | undefined
-  digest: Hex
+  hash: Hex
   /**
    * The relying party identifier to use.
    */
@@ -57,8 +57,8 @@ export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
 export function getCredentialSignRequestOptions(
   parameters: GetCredentialSignRequestOptionsParameters,
 ): GetCredentialSignRequestOptionsReturnType {
-  const { credentialId, digest, rpId = window.location.hostname } = parameters
-  const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(digest)))
+  const { credentialId, hash, rpId = window.location.hostname } = parameters
+  const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)))
   return {
     publicKey: {
       ...(credentialId
