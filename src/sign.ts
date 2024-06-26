@@ -1,4 +1,4 @@
-import type { Hex, WebAuthnSignature } from './types.js'
+import type { Credential, Hex, WebAuthnSignature } from './types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
@@ -6,18 +6,21 @@ import {
   hexToBytes,
 } from './utils.js'
 
-export type SignParameters = GetCredentialSignRequestOptionsParameters
+export type SignParameters = GetCredentialSignRequestOptionsParameters & {
+  getFn?: (
+    options?: CredentialRequestOptions | undefined,
+  ) => Promise<Credential | null>
+}
 
 export type SignReturnType = WebAuthnSignature
 
 export async function sign(
   parameters: SignParameters,
 ): Promise<SignReturnType> {
-  const options = getCredentialSignRequestOptions(parameters)
+  const { getFn = window.navigator.credentials.get, ...rest } = parameters
+  const options = getCredentialSignRequestOptions(rest)
   try {
-    const credential = (await window.navigator.credentials.get(
-      options,
-    )) as PublicKeyCredential
+    const credential = (await getFn(options)) as PublicKeyCredential
     if (!credential) throw new Error('credential request failed.')
     const response = credential.response as AuthenticatorAssertionResponse
 

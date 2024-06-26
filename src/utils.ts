@@ -56,7 +56,3 @@ export async function bytesToCryptoKey(bytes: Uint8Array): Promise<any> {
 export async function cryptoKeyToBytes(key: CryptoKey): Promise<Uint8Array> {
   return new Uint8Array(await crypto.subtle.exportKey('raw', key))
 }
-
-export async function cryptoKeyToJwk(key: CryptoKey): Promise<JsonWebKey> {
-  return await crypto.subtle.exportKey('jwk', key)
-}

@@ -1,3 +1,8 @@
+export type P256Credential = {
+  id: string
+  publicKey: PublicKey
+}
+
 export type Hex = `0x${string}`
 
 export type PublicKey<compressed extends boolean = boolean> = {
@@ -38,3 +43,108 @@ export type OneOf<
     >
   : never
 type KeyofUnion<type> = type extends type ? keyof type : never
+
+////////////////////////////////////////////////////////////////////////
+// Web Authentication API
+////////////////////////////////////////////////////////////////////////
+
+type AttestationConveyancePreference =
+  | 'direct'
+  | 'enterprise'
+  | 'indirect'
+  | 'none'
+type AuthenticatorAttachment = 'cross-platform' | 'platform'
+type AuthenticatorTransport = 'ble' | 'hybrid' | 'internal' | 'nfc' | 'usb'
+type COSEAlgorithmIdentifier = number
+type CredentialMediationRequirement =
+  | 'conditional'
+  | 'optional'
+  | 'required'
+  | 'silent'
+type PublicKeyCredentialType = 'public-key'
+type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required'
+type UserVerificationRequirement = 'discouraged' | 'preferred' | 'required'
+
+type BufferSource = ArrayBufferView | ArrayBuffer
+
+interface AuthenticationExtensionsClientInputs {
+  appid?: string
+  credProps?: boolean
+  hmacCreateSecret?: boolean
+  minPinLength?: boolean
+}
+
+interface AuthenticatorSelectionCriteria {
+  authenticatorAttachment?: AuthenticatorAttachment
+  requireResidentKey?: boolean
+  residentKey?: ResidentKeyRequirement
+  userVerification?: UserVerificationRequirement
+}
+
+export interface Credential {
+  readonly id: string
+  readonly type: string
+}
+
+export interface CredentialCreationOptions {
+  publicKey?: PublicKeyCredentialCreationOptions
+  signal?: AbortSignal
+}
+
+export interface CredentialRequestOptions {
+  mediation?: CredentialMediationRequirement
+  publicKey?: PublicKeyCredentialRequestOptions
+  signal?: AbortSignal
+}
+
+export interface PublicKeyCredential extends Credential {
+  readonly authenticatorAttachment: string | null
+  readonly rawId: ArrayBuffer
+  readonly response: AuthenticatorResponse
+  getClientExtensionResults(): AuthenticationExtensionsClientOutputs
+}
+
+export interface PublicKeyCredentialCreationOptions {
+  attestation?: AttestationConveyancePreference
+  authenticatorSelection?: AuthenticatorSelectionCriteria
+  challenge: BufferSource
+  excludeCredentials?: PublicKeyCredentialDescriptor[]
+  extensions?: AuthenticationExtensionsClientInputs
+  pubKeyCredParams: PublicKeyCredentialParameters[]
+  rp: PublicKeyCredentialRpEntity
+  timeout?: number
+  user: PublicKeyCredentialUserEntity
+}
+
+interface PublicKeyCredentialDescriptor {
+  id: BufferSource
+  transports?: AuthenticatorTransport[]
+  type: PublicKeyCredentialType
+}
+
+interface PublicKeyCredentialEntity {
+  name: string
+}
+
+interface PublicKeyCredentialParameters {
+  alg: COSEAlgorithmIdentifier
+  type: PublicKeyCredentialType
+}
+
+interface PublicKeyCredentialRequestOptions {
+  allowCredentials?: PublicKeyCredentialDescriptor[]
+  challenge: BufferSource
+  extensions?: AuthenticationExtensionsClientInputs
+  rpId?: string
+  timeout?: number
+  userVerification?: UserVerificationRequirement
+}
+
+interface PublicKeyCredentialRpEntity extends PublicKeyCredentialEntity {
+  id?: string
+}
+
+interface PublicKeyCredentialUserEntity extends PublicKeyCredentialEntity {
+  displayName: string
+  id: BufferSource
+}
