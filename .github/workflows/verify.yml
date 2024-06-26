@@ -60,23 +60,5 @@ jobs:
         with: 
           node-version: 22
 
-      - name: Set up Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-
-      - name: Set up Rundler
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
-        with:
-          repo: alchemyplatform/rundler
-          platform: linux
-
-      - name: Set up Docker
-        uses: docker-practice/actions-setup-docker@master
-      
-      - name: Pull Silius
-        run: docker pull ghcr.io/silius-rs/silius:latest
-        
-      - name: Pull Stackup
-        run: docker pull stackupwallet/stackup-bundler:latest
-
       - name: Run tests
         run: pnpm test
