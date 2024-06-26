@@ -2,7 +2,10 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "webauthn-p256": "0.0.0"
+    "webauthn-p256": "0.0.0",
+    "playground": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "real-kings-reply"
+  ]
 }
