@@ -1,8 +1,0 @@
-{
-  "mode": "pre",
-  "tag": "alpha",
-  "initialVersions": {
-    "webauthn-p256": "0.0.0"
-  },
-  "changesets": []
-}
