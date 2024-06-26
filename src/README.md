@@ -76,7 +76,7 @@ const verified = await client.readContract({
 
 ## Authors
 
-- [@jxom](https://github.com/jxom) (jxom.eth, [X](https://x.com/jakemoxey))
+- [@jxom](https://github.com/jxom) (jxom.eth, [X](https://x.com/_jxom))
 
 ## License
 
