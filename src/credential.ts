@@ -43,7 +43,12 @@ export type CreateCredentialReturnType = Prettify<P256Credential>
 export async function createCredential(
   parameters: CreateCredentialParameters,
 ): Promise<CreateCredentialReturnType> {
-  const { createFn = window.navigator.credentials.create, ...rest } = parameters
+  const {
+    createFn = window.navigator.credentials.create.bind(
+      window.navigator.credentials,
+    ),
+    ...rest
+  } = parameters
   const options = getCredentialCreationOptions(rest)
   try {
     const credential = (await createFn(options)) as PublicKeyCredential

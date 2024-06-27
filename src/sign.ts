@@ -38,7 +38,10 @@ export type SignReturnType = WebAuthnSignature
 export async function sign(
   parameters: SignParameters,
 ): Promise<SignReturnType> {
-  const { getFn = window.navigator.credentials.get, ...rest } = parameters
+  const {
+    getFn = window.navigator.credentials.get.bind(window.navigator.credentials),
+    ...rest
+  } = parameters
   const options = getCredentialSignRequestOptions(rest)
   try {
     const credential = (await getFn(options)) as PublicKeyCredential
