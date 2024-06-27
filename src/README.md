@@ -1,8 +1,17 @@
-# webauthn-p256
+<br/>
 
-P256 signature utilities for WebAuthn.
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/wevm/webauthn-p256/blob/main/.github/webauthn-p256-dark.svg">
+      <img alt="webauthn-p256 logo" src="https://github.com/wevm/webauthn-p256/blob/main/.github/webauthn-p256-light.svg" width="auto" height="100">
+    </picture>
+</p>
 
+<p align="center">
+  P256 signature utilities for WebAuthn.
 <p>
+
+<p align="center">
   <a href="https://www.npmjs.com/package/webauthn-p256">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/npm/v/webauthn-p256?colorA=21262d&colorB=21262d&style=flat">
