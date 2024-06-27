@@ -24,7 +24,7 @@ P256 signature utilities for WebAuthn.
 </p>
 
 > [!WARNING]
-> Work in progress. Use at your own risk.
+> This package is currently in development. It can be installed at `npm i webauthn-p256@main`. Use at your own risk.
 
 ## Table of Contents
 
