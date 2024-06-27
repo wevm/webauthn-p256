@@ -82,7 +82,7 @@ We can also verify WebAuthn signatures onchain via contracts that expose a WebAu
 
 The example below uses [Viem](https://viem.sh) to call the `verify` function on the [`WebAuthn.sol` contract](https://github.com/base-org/webauthn-sol/blob/main/src/WebAuthn.sol#L105). However, in a real world scenario, a contract implementing the WebAuthn verifier interface will call the `verify` function (e.g. a `isValidSignature` interface on an ERC-4337 Smart Wallet).
 
-> Note: Bytecode for the `code` variable can be [obtained here]().
+> Note: Bytecode for the `code` variable can be [obtained here](https://github.com/wevm/webauthn-p256/blob/c95b19129143a307ad5419c1911b66eccf8e24fc/playground/src/contracts.ts#L2-L3).
 
 ```ts
 import { createCredential, sign } from 'webauthn-p256'
