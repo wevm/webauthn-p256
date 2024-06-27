@@ -2,7 +2,7 @@
 
 P256 signature utilities for WebAuthn.
 
-<p align="center">
+<p>
   <a href="https://www.npmjs.com/package/webauthn-p256">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/npm/v/webauthn-p256?colorA=21262d&colorB=21262d&style=flat">
