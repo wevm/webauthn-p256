@@ -23,6 +23,9 @@ P256 signature utilities for WebAuthn.
   </a>
 </p>
 
+> [!WARNING]
+> Work in progress. Use at your own risk.
+
 ## Table of Contents
 
   - [Install](#install)
