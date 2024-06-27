@@ -22,23 +22,6 @@ describe('parseCredentialPublicKey', () => {
     `,
     )
   })
-
-  test('args: compressed', async () => {
-    const cPublicKey = hexToBytes(
-      '0x3059301306072a8648ce3d020106082a8648ce3d030107034200042caa86454963544bbc964f29979ddb953395f1baa9b123b1edb6ed1109bf0cb2ce91893a28a0f9f0c6b85edf44b01e95d46a39eeeab45a0b2583c05cb6414904',
-    )
-    const publicKey = await parseCredentialPublicKey(cPublicKey, {
-      compressed: true,
-    })
-    expect(publicKey).toMatchInlineSnapshot(
-      `
-      {
-        "x": 20203056040651495381197951451296140612901279933246014793928478310014916693170n,
-        "y": 93433586739750872222655519548076692627611806436511880340534198806289473161476n,
-      }
-    `,
-    )
-  })
 })
 
 describe('parsePublicKey', () => {
@@ -48,6 +31,7 @@ describe('parsePublicKey', () => {
     const parsed = parsePublicKey(publicKey)
     expect(parsed).toMatchInlineSnapshot(`
       {
+        "prefix": undefined,
         "x": 20203056040651495381197951451296140612901279933246014793928478310014916693170n,
         "y": 93433586739750872222655519548076692627611806436511880340534198806289473161476n,
       }
@@ -61,6 +45,7 @@ describe('parsePublicKey', () => {
     const parsed = parsePublicKey(publicKey)
     expect(parsed).toMatchInlineSnapshot(`
       {
+        "prefix": undefined,
         "x": 20203056040651495381197951451296140612901279933246014793928478310014916693170n,
         "y": 93433586739750872222655519548076692627611806436511880340534198806289473161476n,
       }

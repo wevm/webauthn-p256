@@ -5,10 +5,11 @@ export type P256Credential = {
 
 export type Hex = `0x${string}`
 
-export type PublicKey<compressed extends boolean = boolean> = {
+export type PublicKey = {
+  prefix?: number | undefined
   x: bigint
   y: bigint
-} & (compressed extends true ? { prefix: number } : { prefix?: undefined })
+}
 
 export type WebAuthnSignature = {
   authenticatorData: Hex

@@ -7,6 +7,12 @@ import {
 } from './utils.js'
 
 export type SignParameters = GetCredentialSignRequestOptionsParameters & {
+  /**
+   * Credential request function. Useful for environments that do not support
+   * the WebAuthn API natively (i.e. React Native or testing environments).
+   *
+   * @default window.navigator.credentials.get
+   */
   getFn?: (
     options?: CredentialRequestOptions | undefined,
   ) => Promise<Credential | null>
@@ -14,6 +20,21 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
 
 export type SignReturnType = WebAuthnSignature
 
+/**
+ * Signs a hash using a stored credential. If no credential is provided,
+ * a prompt will be displayed for the user to select an existing credential
+ * that was previously registered.
+ *
+ * @example
+ * ```ts
+ * import { credential } from './credential'
+ *
+ * const signature = await sign({
+ *   credentialId: credential.id,
+ *   hash: '0x...',
+ * })
+ * ```
+ */
 export async function sign(
   parameters: SignParameters,
 ): Promise<SignReturnType> {
@@ -57,6 +78,16 @@ export type GetCredentialSignRequestOptionsParameters = {
 }
 export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
 
+/**
+ * Returns the request options to sign a hash using a stored credential
+ * with a P256 public key.
+ *
+ * @example
+ * ```ts
+ * const options = getCredentialSignRequestOptions({ hash: '0x...' })
+ * const credentials = window.navigator.credentials.get(options)
+ * ```
+ */
 export function getCredentialSignRequestOptions(
   parameters: GetCredentialSignRequestOptionsParameters,
 ): GetCredentialSignRequestOptionsReturnType {
@@ -81,6 +112,9 @@ export function getCredentialSignRequestOptions(
   }
 }
 
+/**
+ * Parses an ASN.1 signature into a r and s value.
+ */
 function parseAsn1Signature(bytes: Uint8Array) {
   const r_start = bytes[4] === 0 ? 5 : 4
   const r_end = r_start + 32

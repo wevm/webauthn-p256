@@ -6,6 +6,7 @@ import type {
   Credential,
   OneOf,
   P256Credential,
+  Prettify,
   PublicKeyCredential,
   PublicKeyCredentialCreationOptions,
 } from './types.js'
@@ -18,12 +19,18 @@ export const createChallenge = Uint8Array.from([
 
 export type CreateCredentialParameters =
   GetCredentialCreationOptionsParameters & {
+    /**
+     * Credential creation function. Useful for environments that do not support
+     * the WebAuthn API natively (i.e. React Native or testing environments).
+     *
+     * @default window.navigator.credentials.create
+     */
     createFn?: (
       options?: CredentialCreationOptions | undefined,
     ) => Promise<Credential | null>
   }
 
-export type CreateCredentialReturnType = P256Credential
+export type CreateCredentialReturnType = Prettify<P256Credential>
 
 /**
  * Creates a new credential, which can be stored and later used for signing.
@@ -95,6 +102,15 @@ export type GetCredentialCreationOptionsParameters = {
 
 export type GetCredentialCreationOptionsReturnType = CredentialCreationOptions
 
+/**
+ * Returns the creation options for a P256 WebAuthn Credential with a Passkey authenticator.
+ *
+ * @example
+ * ```ts
+ * const options = getCredentialCreationOptions({ name: 'Example' })
+ * const credentials = window.navigator.credentials.create(options)
+ * ```
+ */
 export function getCredentialCreationOptions(
   parameters: GetCredentialCreationOptionsParameters,
 ): GetCredentialCreationOptionsReturnType {
