@@ -8,7 +8,6 @@ export {
 } from './credential.js'
 
 export {
-  type ParseCredentialPublicKeyOptions,
   parseCredentialPublicKey,
   parsePublicKey,
   type SerializePublicKeyOptions,
