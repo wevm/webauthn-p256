@@ -116,9 +116,10 @@ export function getCredentialSignRequestOptions(
 }
 
 /**
+ * @internal
  * Parses an ASN.1 signature into a r and s value.
  */
-function parseAsn1Signature(bytes: Uint8Array) {
+export function parseAsn1Signature(bytes: Uint8Array) {
   const r_start = bytes[4] === 0 ? 5 : 4
   const r_end = r_start + 32
   const s_start = bytes[r_end + 2] === 0 ? r_end + 3 : r_end + 2
@@ -128,6 +129,7 @@ function parseAsn1Signature(bytes: Uint8Array) {
   const n = BigInt(
     '0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551',
   )
+
   return {
     r,
     s: s > n / 2n ? n - s : s,

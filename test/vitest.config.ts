@@ -4,7 +4,8 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     coverage: {
-      all: false,
+      exclude: ['**/_cjs/**', '**/_esm/**', '**/_types/**', '**/playground/**'],
+      include: ['**/src/**'],
       provider: 'v8',
       reporter: process.env.CI ? ['lcov'] : ['text', 'json', 'html'],
     },
