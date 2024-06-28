@@ -113,6 +113,7 @@ export function App() {
                   r,
                   s,
                   typeIndex,
+                  userVerificationRequired,
                 } = JSON.parse(formData.get('signature') as string)
 
                 const signature = {
@@ -122,6 +123,7 @@ export function App() {
                   r: BigInt(r),
                   s: BigInt(s),
                   typeIndex: BigInt(typeIndex),
+                  userVerificationRequired,
                 } satisfies WebAuthnSignature
 
                 const verified = await (() => {
@@ -139,6 +141,7 @@ export function App() {
                       ],
                     })
                   return verify({
+                    hash: digest,
                     publicKey: credential.publicKey,
                     signature,
                   })
