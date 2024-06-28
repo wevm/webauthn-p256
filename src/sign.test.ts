@@ -41,7 +41,7 @@ describe('sign', () => {
           },
         } as any)
       },
-      hash: '0xdeadbeef',
+      hash: '0xf631058a3ba1116acce12396fad0a125b5041c43f8e15723709f81aa8d5f4ccf',
     })
 
     expect(signature).toMatchInlineSnapshot(`
@@ -55,6 +55,48 @@ describe('sign', () => {
         "userVerificationRequired": true,
       }
     `)
+    expect(options).toMatchInlineSnapshot(`
+      {
+        "publicKey": {
+          "challenge": Uint8Array [
+            246,
+            49,
+            5,
+            138,
+            59,
+            161,
+            17,
+            106,
+            204,
+            225,
+            35,
+            150,
+            250,
+            208,
+            161,
+            37,
+            181,
+            4,
+            28,
+            67,
+            248,
+            225,
+            87,
+            35,
+            112,
+            159,
+            129,
+            170,
+            141,
+            95,
+            76,
+            207,
+          ],
+          "rpId": "https://example.com",
+          "userVerification": "required",
+        },
+      }
+    `)
   })
 
   test('error: null credential', async () => {
@@ -63,7 +105,7 @@ describe('sign', () => {
         getFn() {
           return Promise.resolve(null)
         },
-        hash: '0xdeadbeef',
+        hash: '0xf631058a3ba1116acce12396fad0a125b5041c43f8e15723709f81aa8d5f4ccf',
       }),
     ).rejects.toMatchInlineSnapshot('[Error: credential request failed.]')
   })
@@ -74,7 +116,7 @@ describe('sign', () => {
         getFn() {
           return Promise.reject(new Error('foo'))
         },
-        hash: '0xdeadbeef',
+        hash: '0xf631058a3ba1116acce12396fad0a125b5041c43f8e15723709f81aa8d5f4ccf',
       }),
     ).rejects.toMatchInlineSnapshot('[Error: credential request failed.]')
   })
