@@ -1,3 +1,4 @@
+import { p256 } from '@noble/curves/p256'
 import type { Credential, Hex, WebAuthnSignature } from './types.js'
 import {
   base64UrlToBytes,
@@ -128,9 +129,7 @@ export function parseAsn1Signature(bytes: Uint8Array) {
 
   const r = BigInt(bytesToHex(bytes.slice(r_start, r_end)))
   const s = BigInt(bytesToHex(bytes.slice(s_start)))
-  const n = BigInt(
-    '0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551',
-  )
+  const n = p256.CURVE.n
 
   return {
     r,
