@@ -18,6 +18,7 @@ export type WebAuthnSignature = {
   typeIndex: bigint
   r: bigint
   s: bigint
+  userVerificationRequired: boolean
 }
 
 ////////////////////////////////////////////////////////////////////////

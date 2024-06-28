@@ -65,6 +65,8 @@ export async function sign(
       typeIndex,
       r,
       s,
+      userVerificationRequired:
+        options.publicKey!.userVerification === 'required',
     }
   } catch (error) {
     throw new Error('credential request failed.', { cause: error })
