@@ -32,9 +32,6 @@
   </a>
 </p>
 
-> [!WARNING]
-> This package is currently in development. It can be installed at `npm i webauthn-p256@main`. Use at your own risk.
-
 ## Table of Contents
 
   - [Install](#install)
@@ -80,6 +77,7 @@ const signature = await sign({
 })
 
 const verified = await verify({
+  hash: '0x...',
   signature,
   publicKey: credential.publicKey,
 })
