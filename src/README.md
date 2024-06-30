@@ -189,6 +189,9 @@ const signature = await sign({
 
 Verifies a signature using the credential public key and the hash which was signed.
 
+> [!WARNING]
+> The `verify` implementation mimics [Daimo's audited `WebAuthn.sol`](https://github.com/daimo-eth/p256-verifier/blob/master/src/WebAuthn.sol) – however, this TypeScript implementation is unaudited.
+
 #### Usage
 
 ```ts
