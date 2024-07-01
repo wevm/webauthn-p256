@@ -55,7 +55,7 @@ npm i webauthn-p256
 ```
 
 ```bash
-pnpm add webauthn-p256
+pnpm i webauthn-p256
 ```
 
 ```bash
