@@ -44,7 +44,9 @@
     - [`getCredentialCreationOptions`](#getcredentialcreationoptions)
     - [`getCredentialSignRequestOptions`](#getcredentialsignrequestoptions)
     - [`parsePublicKey`](#parsepublickey)
+    - [`parseSignature`](#parsesignature)
     - [`serializePublicKey`](#serializepublickey)
+    - [`serializeSignature`](#serializepublickey)
   - [Authors](#authors)
   - [License](#license)
 
@@ -297,6 +299,28 @@ console.log(publicKey)
 | `publicKey` | Serialized P256 Credential public key. | `0x${string}` |
 | returns     | Parsed public key.                     | `PublicKey`   |
 
+### `parseSignature`
+
+Parses a serialized signature into r and s coordinates.
+
+#### Usage
+
+```ts
+import { parseSignature } from 'webauthn-p256'
+
+const signature = parseSignature('0x...')
+
+console.log(signature)
+// { r: 1231..., s: 12412... }
+```
+
+#### API
+
+| Name        | Description                            | Type          |
+| ----------- | -------------------------------------- | ------------- |
+| `signature` | Serialized P256 signature. | `0x${string}` |
+| returns     | Parsed P256 signature.                     | `Signature`   |
+
 ### `serializePublicKey`
 
 Serializes a public key into a hex string or bytes.
@@ -321,28 +345,6 @@ console.log(publicKey)
 | ----------- | --------------------------- | ----------- |
 | `publicKey` | P256 Credential public key. | `PublicKey` |
 | returns     | Serialized public key.      | `string`    |
-
-### `parseSignature`
-
-Parses a serialized signature into r and s coordinates.
-
-#### Usage
-
-```ts
-import { parseSignature } from 'webauthn-p256'
-
-const signature = parseSignature('0x...')
-
-console.log(signature)
-// { r: 1231..., s: 12412... }
-```
-
-#### API
-
-| Name        | Description                            | Type          |
-| ----------- | -------------------------------------- | ------------- |
-| `signature` | Serialized P256 signature. | `0x${string}` |
-| returns     | Parsed P256 signature.                     | `Signature`   |
 
 ### `serializeSignature`
 
