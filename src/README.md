@@ -67,15 +67,18 @@ bun i webauthn-p256
 ```ts
 import { createCredential, sign, verify } from 'webauthn-p256'
 
+// Register a WebAuthn credential (ie. passkey).
 const credential = createCredential({
   name: 'Example',
 })
 
+// Sign hash with credential.
 const { signature, webauthn } = await sign({
   credentialId: credential.id,
   hash: '0x...'
 })
 
+// Verify signature with hash, public key, and WebAuthn data.
 const verified = await verify({
   hash: '0x...',
   publicKey: credential.publicKey,
