@@ -1,3 +1,4 @@
+import { numberToBytesBE } from '@noble/curves/abstract/utils'
 import { p256 } from '@noble/curves/p256'
 import type { Credential, Hex, Signature, WebAuthnData } from './types.js'
 import {
@@ -141,4 +142,37 @@ export function parseAsn1Signature(bytes: Uint8Array) {
     r,
     s: s > n / 2n ? n - s : s,
   }
+}
+
+/**
+ * Parses a serialized signature into r and s values.
+ */
+export function parseSignature(signature: Hex | Uint8Array): Signature {
+  const bytes =
+    typeof signature === 'string' ? hexToBytes(signature) : signature
+  const r = bytes.slice(0, 32)
+  const s = bytes.slice(32, 64)
+  return {
+    r: BigInt(bytesToHex(r)),
+    s: BigInt(bytesToHex(s)),
+  }
+}
+
+export type SerializeSignatureOptions<to extends 'hex' | 'bytes' = 'hex'> = {
+  to?: to | 'bytes' | 'hex' | undefined
+}
+
+/**
+ * Serializes a signature into a hex string or bytes.
+ */
+export function serializeSignature<to extends 'hex' | 'bytes' = 'hex'>(
+  signature: Signature,
+  options: SerializeSignatureOptions<to> = {},
+): to extends 'hex' ? Hex : Uint8Array {
+  const { to = 'hex' } = options
+  const result = new Uint8Array([
+    ...numberToBytesBE(signature.r, 32),
+    ...numberToBytesBE(signature.s, 32),
+  ])
+  return (to === 'hex' ? bytesToHex(result) : result) as any
 }

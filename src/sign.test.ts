@@ -2,6 +2,8 @@ import { describe, expect, test } from 'vitest'
 import {
   getCredentialSignRequestOptions,
   parseAsn1Signature,
+  parseSignature,
+  serializeSignature,
   sign,
 } from './sign.js'
 
@@ -305,5 +307,130 @@ describe('parseAsn1Signature', async () => {
         "s": 38128069854508352487650813297276660089883323342114816967244811337934223528105n,
       }
     `)
+  })
+})
+
+describe('parseSignature', () => {
+  test('default', () => {
+    const signature =
+      '0x16d6f4bd3231c71c5e58927b9cf2ee701df03b52e3db71efc03d1139122f854f67f32a4fcb17b07ab9b7755b61e999b99139074fc8e1aa6d33d25beccbb2fbd4'
+    expect(parseSignature(signature)).toMatchInlineSnapshot(
+      `
+      {
+        "r": 10330677067519063752777069525326520293658884904426299601620960859195372963151n,
+        "s": 47017859265388077754498411591757867926785106410894171160067329762716841868244n,
+      }
+    `,
+    )
+    expect(serializeSignature(parseSignature(signature))).toEqual(signature)
+  })
+
+  test('bytes', () => {
+    const signature = new Uint8Array([
+      22, 214, 244, 189, 50, 49, 199, 28, 94, 88, 146, 123, 156, 242, 238, 112,
+      29, 240, 59, 82, 227, 219, 113, 239, 192, 61, 17, 57, 18, 47, 133, 79,
+      103, 243, 42, 79, 203, 23, 176, 122, 185, 183, 117, 91, 97, 233, 153, 185,
+      145, 57, 7, 79, 200, 225, 170, 109, 51, 210, 91, 236, 203, 178, 251, 212,
+    ])
+    expect(parseSignature(signature)).toMatchInlineSnapshot(
+      `
+      {
+        "r": 10330677067519063752777069525326520293658884904426299601620960859195372963151n,
+        "s": 47017859265388077754498411591757867926785106410894171160067329762716841868244n,
+      }
+    `,
+    )
+  })
+})
+
+describe('serializeSignature', () => {
+  test('default', () => {
+    const signature = {
+      r: 10330677067519063752777069525326520293658884904426299601620960859195372963151n,
+      s: 47017859265388077754498411591757867926785106410894171160067329762716841868244n,
+    } as const
+    expect(serializeSignature(signature)).toMatchInlineSnapshot(
+      `"0x16d6f4bd3231c71c5e58927b9cf2ee701df03b52e3db71efc03d1139122f854f67f32a4fcb17b07ab9b7755b61e999b99139074fc8e1aa6d33d25beccbb2fbd4"`,
+    )
+    expect(parseSignature(serializeSignature(signature))).toEqual(signature)
+  })
+
+  test('bytes', () => {
+    const signature = {
+      r: 10330677067519063752777069525326520293658884904426299601620960859195372963151n,
+      s: 47017859265388077754498411591757867926785106410894171160067329762716841868244n,
+    } as const
+    expect(
+      serializeSignature(signature, { to: 'bytes' }),
+    ).toMatchInlineSnapshot(
+      `
+      Uint8Array [
+        22,
+        214,
+        244,
+        189,
+        50,
+        49,
+        199,
+        28,
+        94,
+        88,
+        146,
+        123,
+        156,
+        242,
+        238,
+        112,
+        29,
+        240,
+        59,
+        82,
+        227,
+        219,
+        113,
+        239,
+        192,
+        61,
+        17,
+        57,
+        18,
+        47,
+        133,
+        79,
+        103,
+        243,
+        42,
+        79,
+        203,
+        23,
+        176,
+        122,
+        185,
+        183,
+        117,
+        91,
+        97,
+        233,
+        153,
+        185,
+        145,
+        57,
+        7,
+        79,
+        200,
+        225,
+        170,
+        109,
+        51,
+        210,
+        91,
+        236,
+        203,
+        178,
+        251,
+        212,
+      ]
+    `,
+    )
   })
 })

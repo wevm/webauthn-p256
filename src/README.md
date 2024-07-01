@@ -301,7 +301,7 @@ Serializes a public key into a hex string or bytes.
 #### Usage
 
 ```ts
-import { parsePublicKey } from 'webauthn-p256'
+import { serializePublicKey } from 'webauthn-p256'
 
 const publicKey = serializePublicKey({
   x: 12341...,
@@ -319,7 +319,52 @@ console.log(publicKey)
 | `publicKey` | P256 Credential public key. | `PublicKey` |
 | returns     | Serialized public key.      | `string`    |
 
+### `parseSignature`
 
+Parses a serialized signature into r and s coordinates.
+
+#### Usage
+
+```ts
+import { parseSignature } from 'webauthn-p256'
+
+const signature = parseSignature('0x...')
+
+console.log(signature)
+// { r: 1231..., s: 12412... }
+```
+
+#### API
+
+| Name        | Description                            | Type          |
+| ----------- | -------------------------------------- | ------------- |
+| `signature` | Serialized P256 signature. | `0x${string}` |
+| returns     | Parsed P256 signature.                     | `Signature`   |
+
+### `serializeSignature`
+
+Serializes a signature into a hex string or bytes.
+
+#### Usage
+
+```ts
+import { serializeSignature } from 'webauthn-p256'
+
+const signature = serializeSignature({
+  r: 12341...,
+  s: 12341...,
+})
+
+console.log(signature)
+// '0x...'
+```
+
+#### API
+
+| Name        | Description                 | Type        |
+| ----------- | --------------------------- | ----------- |
+| `signature` | P256 signature. | `Signature` |
+| returns     | Serialized signature.      | `string`    |
 
 ## Authors
 
