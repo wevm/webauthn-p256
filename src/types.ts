@@ -11,14 +11,17 @@ export type PublicKey = {
   y: bigint
 }
 
-export type WebAuthnSignature = {
+export type WebAuthnData = {
   authenticatorData: Hex
   challengeIndex: bigint
   clientDataJSON: string
   typeIndex: bigint
+  userVerificationRequired: boolean
+}
+
+export type Signature = {
   r: bigint
   s: bigint
-  userVerificationRequired: boolean
 }
 
 ////////////////////////////////////////////////////////////////////////

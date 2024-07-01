@@ -2,13 +2,14 @@
 
 import { secp256r1 } from '@noble/curves/p256'
 import { concatBytes, utf8ToBytes } from '@noble/hashes/utils'
-import type { Hex, PublicKey, WebAuthnSignature } from './types.js'
+import type { Hex, PublicKey, Signature, WebAuthnData } from './types.js'
 import { base64UrlToBytes, bytesToHex, hexToBytes } from './utils.js'
 
 export type VerifyParameters = {
   hash: Hex
   publicKey: PublicKey
-  signature: WebAuthnSignature
+  signature: Signature
+  webauthn: WebAuthnData
 }
 
 export type VerifyReturnType = boolean
@@ -29,14 +30,14 @@ export type VerifyReturnType = boolean
 export async function verify(
   parameters: VerifyParameters,
 ): Promise<VerifyReturnType> {
-  const { hash, publicKey, signature } = parameters
+  const { hash, publicKey, signature, webauthn } = parameters
   const {
     authenticatorData,
     challengeIndex,
     clientDataJSON,
     typeIndex,
     userVerificationRequired,
-  } = signature
+  } = webauthn
 
   const authenticatorDataBytes = hexToBytes(authenticatorData)
 
@@ -73,15 +74,12 @@ export async function verify(
   if (bytesToHex(base64UrlToBytes(challenge!)) !== hash) return false
 
   const clientDataJSONHash = new Uint8Array(
-    await crypto.subtle.digest(
-      'SHA-256',
-      utf8ToBytes(signature.clientDataJSON),
-    ),
+    await crypto.subtle.digest('SHA-256', utf8ToBytes(clientDataJSON)),
   )
   const messageHash = new Uint8Array(
     await crypto.subtle.digest(
       'SHA-256',
-      concatBytes(hexToBytes(signature.authenticatorData), clientDataJSONHash),
+      concatBytes(hexToBytes(authenticatorData), clientDataJSONHash),
     ),
   )
 

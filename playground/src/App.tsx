@@ -4,7 +4,9 @@ import { mainnet } from 'viem/chains'
 import {
   type CreateCredentialReturnType,
   type Hex,
-  type WebAuthnSignature,
+  type SignReturnType,
+  type Signature,
+  type WebAuthnData,
   createCredential,
   serializePublicKey,
   sign,
@@ -19,7 +21,7 @@ const client = createPublicClient({
 
 export function App() {
   const [credential, setCredential] = useState<CreateCredentialReturnType>()
-  const [signature, setSignature] = useState<WebAuthnSignature>()
+  const [signResponse, setSignResponse] = useState<SignReturnType>()
   const [verified, setVerified] = useState<boolean>()
 
   return (
@@ -69,11 +71,11 @@ export function App() {
             const formData = new FormData(e.target as HTMLFormElement)
             const digest = formData.get('digest') as Hex
 
-            const signature = await sign({
+            const response = await sign({
               hash: digest,
               credentialId: credential?.id,
             })
-            setSignature(signature)
+            setSignResponse(response)
           }}
         >
           <input
@@ -85,14 +87,18 @@ export function App() {
           <button type="submit">Sign</button>
         </form>
         <br />
-        {signature && (
+        {signResponse && (
           <div>
             <strong>Signature:</strong>
             <br />
-            <pre>{stringify(signature, null, 2)}</pre>
+            <pre>{stringify(signResponse.signature, null, 2)}</pre>
+            <br />
+            <strong>Webauthn Data:</strong>
+            <br />
+            <pre>{stringify(signResponse.webauthn, null, 2)}</pre>
           </div>
         )}
-        {signature && credential && (
+        {signResponse && credential && (
           <div>
             <br />
             <hr />
@@ -106,25 +112,26 @@ export function App() {
                 const formData = new FormData(e.target as HTMLFormElement)
                 const digest = formData.get('digest') as Hex
                 const type = formData.get('type') as string
+                const { r, s } = JSON.parse(formData.get('signature') as string)
                 const {
                   authenticatorData,
                   challengeIndex,
                   clientDataJSON,
-                  r,
-                  s,
                   typeIndex,
                   userVerificationRequired,
-                } = JSON.parse(formData.get('signature') as string)
+                } = JSON.parse(formData.get('webauthn') as string)
 
                 const signature = {
+                  r: BigInt(r),
+                  s: BigInt(s),
+                } satisfies Signature
+                const webauthnData = {
                   authenticatorData,
                   challengeIndex: BigInt(challengeIndex),
                   clientDataJSON,
-                  r: BigInt(r),
-                  s: BigInt(s),
                   typeIndex: BigInt(typeIndex),
                   userVerificationRequired,
-                } satisfies WebAuthnSignature
+                } as WebAuthnData
 
                 const verified = await (() => {
                   if (type === 'onchain')
@@ -135,7 +142,7 @@ export function App() {
                       args: [
                         digest,
                         true,
-                        signature,
+                        { ...webauthnData, ...signature },
                         credential.publicKey.x,
                         credential.publicKey.y,
                       ],
@@ -144,6 +151,7 @@ export function App() {
                     hash: digest,
                     publicKey: credential.publicKey,
                     signature,
+                    webauthn: webauthnData,
                   })
                 })()
 
@@ -166,6 +174,11 @@ export function App() {
                   name="signature"
                   style={{ height: 100, width: 500 }}
                 />
+              </div>
+              <br />
+              <label>Webauthn Data</label>
+              <div>
+                <textarea name="webauthn" style={{ height: 100, width: 500 }} />
               </div>
               <br />
               <div>

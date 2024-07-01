@@ -71,15 +71,16 @@ const credential = createCredential({
   name: 'Example',
 })
 
-const signature = await sign({
+const { signature, webauthn } = await sign({
   credentialId: credential.id,
   hash: '0x...'
 })
 
 const verified = await verify({
   hash: '0x...',
-  signature,
   publicKey: credential.publicKey,
+  signature,
+  webauthn,
 })
 ```
 
@@ -108,7 +109,7 @@ const credential = createCredential({
 
 const hash = '0x...'
 
-const signature = await sign({
+const { signature, webauthn } = await sign({
   credentialId: credential.id,
   hash
 })
@@ -119,8 +120,8 @@ const verified = await client.readContract({
   functionName: 'verify',
   args: [
     hash,
-    true,
-    signature,
+    webauthn.userVerificationRequired,
+    { ...signature, ...webauthn },
     credential.publicKey.x,
     credential.publicKey.y,
   ],
@@ -169,7 +170,7 @@ import { sign } from 'webauthn-p256'
 
 const credential = { /* ... */ }
 
-const signature = await sign({
+const { signature, webauthn } = await sign({
   credentialId: credential.id,
   hash: '0x...',
 })
@@ -183,7 +184,7 @@ const signature = await sign({
 | `getFn`        | Credential retrieval function.    | `(options: CredentialRequestOptions) => Promise<Credential \| null>` |
 | `hash`         | Hash to sign.                     | `0x${string}`                                                        |
 | `rpId`         | Relying party identifier.         | `string`                                                             |
-| returns        | WebAuthn-formatted signature.     | `WebAuthnSignature`                                                  |
+| returns        | Signature + WebAuthn response.     | `{ signature: Signature; webauthn: WebAuthnData }`                                                  |
 
 ### `verify`
 
@@ -199,11 +200,13 @@ import { verify } from 'webauthn-p256'
 
 const credential = { /* ... */ }
 const signature = { /* ... */ }
+const webauthn = { /* ... */ }
  
 const valid = await verify({ 
   hash: '0x...', 
   publicKey: credential.publicKey, 
-  signature 
+  signature,
+  webauthn,
 })
 ```
 
@@ -213,7 +216,8 @@ const valid = await verify({
 | ----------- | ------------------------------ | ------------------- |
 | `hash`      | Hash to verify.                | `0x${string}`       |
 | `publicKey` | P256 Credential public key.    | `PublicKey`         |
-| `signature` | WebAuthn-formatted signature.  | `WebAuthnSignature` |
+| `signature` | P256 Signature.  | `Signature` |
+| `webauthn` | WebAuthn response.  | `WebAuthnData` |
 | returns     | Signature verification result. | `boolean`           |
 
 ## Utilities Reference

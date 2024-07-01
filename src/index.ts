@@ -32,7 +32,8 @@ export type {
   PublicKey,
   PublicKeyCredentialCreationOptions,
   PublicKeyCredential,
-  WebAuthnSignature,
+  Signature,
+  WebAuthnData,
 } from './types.js'
 
 export {

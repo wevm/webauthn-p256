@@ -1,5 +1,5 @@
 import { p256 } from '@noble/curves/p256'
-import type { Credential, Hex, WebAuthnSignature } from './types.js'
+import type { Credential, Hex, Signature, WebAuthnData } from './types.js'
 import {
   base64UrlToBytes,
   bytesToBase64Url,
@@ -19,7 +19,10 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
   ) => Promise<Credential | null>
 }
 
-export type SignReturnType = WebAuthnSignature
+export type SignReturnType = {
+  signature: Signature
+  webauthn: WebAuthnData
+}
 
 /**
  * Signs a hash using a stored credential. If no credential is provided,
@@ -55,19 +58,22 @@ export async function sign(
     const challengeIndex = BigInt(clientDataJSON.indexOf('"challenge"'))
     const typeIndex = BigInt(clientDataJSON.indexOf('"type"'))
 
-    const { r, s } = parseAsn1Signature(
+    const signature = parseAsn1Signature(
       base64UrlToBytes(bytesToBase64Url(new Uint8Array(response.signature))),
     )
 
     return {
-      authenticatorData: bytesToHex(new Uint8Array(response.authenticatorData)),
-      clientDataJSON,
-      challengeIndex,
-      typeIndex,
-      r,
-      s,
-      userVerificationRequired:
-        options.publicKey!.userVerification === 'required',
+      signature,
+      webauthn: {
+        authenticatorData: bytesToHex(
+          new Uint8Array(response.authenticatorData),
+        ),
+        clientDataJSON,
+        challengeIndex,
+        typeIndex,
+        userVerificationRequired:
+          options.publicKey!.userVerification === 'required',
+      },
     }
   } catch (error) {
     throw new Error('credential request failed.', { cause: error })

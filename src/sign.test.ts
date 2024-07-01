@@ -46,13 +46,17 @@ describe('sign', () => {
 
     expect(signature).toMatchInlineSnapshot(`
       {
-        "authenticatorData": "0x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000000",
-        "challengeIndex": 23n,
-        "clientDataJSON": "{"type":"webauthn.get","challenge":"9jEFijuhEWrM4SOW-tChJbUEHEP44VcjcJ-Bqo1fTM8","origin":"http://localhost:5173","crossOrigin":false}",
-        "r": 66146490382651126845293572181789601948468603642860880862207775049723590741413n,
-        "s": 57826873356635199932884692124441746552975787926982721375689326118223204882059n,
-        "typeIndex": 1n,
-        "userVerificationRequired": true,
+        "signature": {
+          "r": 66146490382651126845293572181789601948468603642860880862207775049723590741413n,
+          "s": 57826873356635199932884692124441746552975787926982721375689326118223204882059n,
+        },
+        "webauthn": {
+          "authenticatorData": "0x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000000",
+          "challengeIndex": 23n,
+          "clientDataJSON": "{"type":"webauthn.get","challenge":"9jEFijuhEWrM4SOW-tChJbUEHEP44VcjcJ-Bqo1fTM8","origin":"http://localhost:5173","crossOrigin":false}",
+          "typeIndex": 1n,
+          "userVerificationRequired": true,
+        },
       }
     `)
     expect(options).toMatchInlineSnapshot(`
