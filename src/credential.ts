@@ -1,7 +1,7 @@
 import { keccak_256 } from '@noble/hashes/sha3'
 import { toBytes } from '@noble/hashes/utils'
 
-import { parseCredentialPublicKey } from './publicKey.js'
+import { parseCredentialPublicKey, serializePublicKey } from './publicKey.js'
 import type {
   Credential,
   OneOf,
@@ -58,7 +58,7 @@ export async function createCredential(
     )
     return {
       id: credential.id,
-      publicKey,
+      publicKey: serializePublicKey(publicKey, { compressed: true }),
     }
   } catch (error) {
     throw new Error('credential creation failed.', { cause: error })

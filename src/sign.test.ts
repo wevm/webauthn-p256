@@ -48,15 +48,12 @@ describe('sign', () => {
 
     expect(signature).toMatchInlineSnapshot(`
       {
-        "signature": {
-          "r": 66146490382651126845293572181789601948468603642860880862207775049723590741413n,
-          "s": 57826873356635199932884692124441746552975787926982721375689326118223204882059n,
-        },
+        "signature": "0x923d9639bcb677fa17a26738e8c8a24d58259197283b2a3f2ee135dd4a800da57fd8d9b74b66e1180ca160bdd509c73bf95bd20a8cf520904813c310526c968b",
         "webauthn": {
           "authenticatorData": "0x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000000",
-          "challengeIndex": 23n,
+          "challengeIndex": 23,
           "clientDataJSON": "{"type":"webauthn.get","challenge":"9jEFijuhEWrM4SOW-tChJbUEHEP44VcjcJ-Bqo1fTM8","origin":"http://localhost:5173","crossOrigin":false}",
-          "typeIndex": 1n,
+          "typeIndex": 1,
           "userVerificationRequired": true,
         },
       }

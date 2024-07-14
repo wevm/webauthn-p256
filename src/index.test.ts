@@ -11,6 +11,8 @@ test('exports', () => {
       "serializePublicKey",
       "getCredentialSignRequestOptions",
       "sign",
+      "parseSignature",
+      "serializeSignature",
       "base64ToBase64Url",
       "base64ToUtf8",
       "base64UrlToBase64",

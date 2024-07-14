@@ -21,7 +21,7 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
 }
 
 export type SignReturnType = {
-  signature: Signature
+  signature: Hex
   webauthn: WebAuthnData
 }
 
@@ -56,15 +56,15 @@ export async function sign(
     const clientDataJSON = String.fromCharCode(
       ...new Uint8Array(response.clientDataJSON),
     )
-    const challengeIndex = BigInt(clientDataJSON.indexOf('"challenge"'))
-    const typeIndex = BigInt(clientDataJSON.indexOf('"type"'))
+    const challengeIndex = clientDataJSON.indexOf('"challenge"')
+    const typeIndex = clientDataJSON.indexOf('"type"')
 
     const signature = parseAsn1Signature(
       base64UrlToBytes(bytesToBase64Url(new Uint8Array(response.signature))),
     )
 
     return {
-      signature,
+      signature: serializeSignature(signature),
       webauthn: {
         authenticatorData: bytesToHex(
           new Uint8Array(response.authenticatorData),

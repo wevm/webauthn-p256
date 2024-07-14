@@ -5,10 +5,9 @@ import {
   type CreateCredentialReturnType,
   type Hex,
   type SignReturnType,
-  type Signature,
-  type WebAuthnData,
   createCredential,
-  serializePublicKey,
+  parsePublicKey,
+  parseSignature,
   sign,
   verify,
 } from 'webauthn-p256'
@@ -55,10 +54,10 @@ export function App() {
           <br />
           <strong>Public Key: </strong>
           <br />
-          <pre>{stringify(credential.publicKey, null, 2)}</pre>
+          <pre>{stringify(parsePublicKey(credential.publicKey), null, 2)}</pre>
           <strong>Public Key (serialized): </strong>
           <br />
-          <pre>{serializePublicKey(credential.publicKey)}</pre>
+          <pre>{credential.publicKey}</pre>
         </div>
       )}
       <br />
@@ -112,7 +111,7 @@ export function App() {
                 const formData = new FormData(e.target as HTMLFormElement)
                 const digest = formData.get('digest') as Hex
                 const type = formData.get('type') as string
-                const { r, s } = JSON.parse(formData.get('signature') as string)
+                const signature = formData.get('signature') as Hex
                 const {
                   authenticatorData,
                   challengeIndex,
@@ -121,17 +120,15 @@ export function App() {
                   userVerificationRequired,
                 } = JSON.parse(formData.get('webauthn') as string)
 
-                const signature = {
-                  r: BigInt(r),
-                  s: BigInt(s),
-                } satisfies Signature
                 const webauthnData = {
                   authenticatorData,
-                  challengeIndex: BigInt(challengeIndex),
+                  challengeIndex,
                   clientDataJSON,
-                  typeIndex: BigInt(typeIndex),
+                  typeIndex,
                   userVerificationRequired,
-                } as WebAuthnData
+                } as const
+
+                const { x, y } = parsePublicKey(credential.publicKey)
 
                 const verified = await (() => {
                   if (type === 'onchain')
@@ -142,9 +139,9 @@ export function App() {
                       args: [
                         digest,
                         true,
-                        { ...webauthnData, ...signature },
-                        credential.publicKey.x,
-                        credential.publicKey.y,
+                        { ...webauthnData, ...parseSignature(signature) },
+                        x,
+                        y,
                       ],
                     })
                   return verify({

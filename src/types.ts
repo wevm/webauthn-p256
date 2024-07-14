@@ -1,9 +1,9 @@
+export type Hex = `0x${string}`
+
 export type P256Credential = {
   id: string
-  publicKey: PublicKey
+  publicKey: Hex
 }
-
-export type Hex = `0x${string}`
 
 export type PublicKey = {
   prefix?: number | undefined
@@ -13,9 +13,9 @@ export type PublicKey = {
 
 export type WebAuthnData = {
   authenticatorData: Hex
-  challengeIndex: bigint
+  challengeIndex: number
   clientDataJSON: string
-  typeIndex: bigint
+  typeIndex: number
   userVerificationRequired: boolean
 }
 

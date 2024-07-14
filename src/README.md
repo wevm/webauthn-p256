@@ -98,7 +98,7 @@ The example below uses [Viem](https://viem.sh) to call the `verify` function on 
 > Note: Bytecode for the `code` variable can be [obtained here](https://github.com/wevm/webauthn-p256/blob/c95b19129143a307ad5419c1911b66eccf8e24fc/playground/src/contracts.ts#L2-L3).
 
 ```ts
-import { createCredential, sign } from 'webauthn-p256'
+import { createCredential, parsePublicKey, parseSignature, sign } from 'webauthn-p256'
 import { createPublicClient, http } from 'viem'
 import { mainnet } from 'viem/chains'
 
@@ -119,6 +119,9 @@ const { signature, webauthn } = await sign({
   hash
 })
 
+const { x, y } = parsePublicKey(credential.publicKey)
+const { r, s } = parseSignature(signature)
+
 const verified = await client.readContract({
   abi,
   code,
@@ -126,9 +129,9 @@ const verified = await client.readContract({
   args: [
     hash,
     webauthn.userVerificationRequired,
-    { ...signature, ...webauthn },
-    credential.publicKey.x,
-    credential.publicKey.y,
+    { ...webauthn, r, s },
+    x,
+    y,
   ],
 })
 ```
@@ -189,7 +192,7 @@ const { signature, webauthn } = await sign({
 | `getFn`        | Credential retrieval function.    | `(options: CredentialRequestOptions) => Promise<Credential \| null>` |
 | `hash`         | Hash to sign.                     | `0x${string}`                                                        |
 | `rpId`         | Relying party identifier.         | `string`                                                             |
-| returns        | Signature + WebAuthn response.     | `{ signature: Signature; webauthn: WebAuthnData }`                                                  |
+| returns        | Signature + WebAuthn response.     | `{ signature: Hex; webauthn: WebAuthnData }`                                                  |
 
 ### `verify`
 
@@ -204,7 +207,7 @@ Verifies a signature using the credential public key and the hash which was sign
 import { verify } from 'webauthn-p256'
 
 const credential = { /* ... */ }
-const signature = { /* ... */ }
+const signature = '0x...'
 const webauthn = { /* ... */ }
  
 const valid = await verify({ 
@@ -220,8 +223,8 @@ const valid = await verify({
 | Name        | Description                    | Type                |
 | ----------- | ------------------------------ | ------------------- |
 | `hash`      | Hash to verify.                | `0x${string}`       |
-| `publicKey` | P256 Credential public key.    | `PublicKey`         |
-| `signature` | P256 Signature.  | `Signature` |
+| `publicKey` | P256 Credential public key.    | `Hex`         |
+| `signature` | P256 Signature.  | `Hex` |
 | `webauthn` | WebAuthn response.  | `WebAuthnData` |
 | returns     | Signature verification result. | `boolean`           |
 

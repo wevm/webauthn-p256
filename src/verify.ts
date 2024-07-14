@@ -2,13 +2,15 @@
 
 import { secp256r1 } from '@noble/curves/p256'
 import { concatBytes, utf8ToBytes } from '@noble/hashes/utils'
-import type { Hex, PublicKey, Signature, WebAuthnData } from './types.js'
+import { parsePublicKey } from './publicKey.js'
+import { parseSignature } from './sign.js'
+import type { Hex, WebAuthnData } from './types.js'
 import { base64UrlToBytes, bytesToHex, hexToBytes } from './utils.js'
 
 export type VerifyParameters = {
   hash: Hex
-  publicKey: PublicKey
-  signature: Signature
+  publicKey: Hex
+  signature: Hex
   webauthn: WebAuthnData
 }
 
@@ -30,7 +32,7 @@ export type VerifyReturnType = boolean
 export async function verify(
   parameters: VerifyParameters,
 ): Promise<VerifyReturnType> {
-  const { hash, publicKey, signature, webauthn } = parameters
+  const { hash, webauthn } = parameters
   const {
     authenticatorData,
     challengeIndex,
@@ -82,6 +84,9 @@ export async function verify(
       concatBytes(hexToBytes(authenticatorData), clientDataJSONHash),
     ),
   )
+
+  const publicKey = parsePublicKey(parameters.publicKey)
+  const signature = parseSignature(parameters.signature)
 
   const recovered_0 = new secp256r1.Signature(signature.r, signature.s)
     .addRecoveryBit(0)

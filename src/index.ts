@@ -21,6 +21,8 @@ export {
   type SignParameters,
   type SignReturnType,
   sign,
+  parseSignature,
+  serializeSignature,
 } from './sign.js'
 
 export type {
