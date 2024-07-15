@@ -1,5 +1,11 @@
 # webauthn-p256
 
+## 0.0.4
+
+### Patch Changes
+
+- [`ad1a1d4`](https://github.com/wevm/webauthn-p256/commit/ad1a1d48d083fd855ec3458f985f150dea2baa5f) Thanks [@jxom](https://github.com/jxom)! - Fixed `createCredential` and `sign` parameters to conform to exact optional property types.
+
 ## 0.0.3
 
 ### Patch Changes
