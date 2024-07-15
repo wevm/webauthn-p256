@@ -25,9 +25,11 @@ export type CreateCredentialParameters =
      *
      * @default window.navigator.credentials.create
      */
-    createFn?: (
-      options?: CredentialCreationOptions | undefined,
-    ) => Promise<Credential | null>
+    createFn?:
+      | ((
+          options?: CredentialCreationOptions | undefined,
+        ) => Promise<Credential | null>)
+      | undefined
   }
 
 export type CreateCredentialReturnType = Prettify<P256Credential>

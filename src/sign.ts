@@ -15,9 +15,11 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
    *
    * @default window.navigator.credentials.get
    */
-  getFn?: (
-    options?: CredentialRequestOptions | undefined,
-  ) => Promise<Credential | null>
+  getFn?:
+    | ((
+        options?: CredentialRequestOptions | undefined,
+      ) => Promise<Credential | null>)
+    | undefined
 }
 
 export type SignReturnType = {
