@@ -61,6 +61,7 @@ export async function createCredential(
     return {
       id: credential.id,
       publicKey: serializePublicKey(publicKey, { compressed: true }),
+      raw: credential,
     }
   } catch (error) {
     throw new Error('credential creation failed.', { cause: error })
@@ -68,6 +69,19 @@ export async function createCredential(
 }
 
 export type GetCredentialCreationOptionsParameters = {
+  /**
+   * A string specifying the relying party's preference for how the attestation statement
+   * (i.e., provision of verifiable evidence of the authenticity of the authenticator and its data)
+   * is conveyed during credential creation.
+   */
+  attestation?: PublicKeyCredentialCreationOptions['attestation'] | undefined
+  /**
+   * An object whose properties are criteria used to filter out the potential authenticators
+   * for the credential creation operation.
+   */
+  authenticatorSelection?:
+    | PublicKeyCredentialCreationOptions['authenticatorSelection']
+    | undefined
   /**
    * An `ArrayBuffer`, `TypedArray`, or `DataView` used as a cryptographic challenge.
    */
@@ -122,6 +136,13 @@ export function getCredentialCreationOptions(
   parameters: GetCredentialCreationOptionsParameters,
 ): GetCredentialCreationOptionsReturnType {
   const {
+    attestation = 'none',
+    authenticatorSelection = {
+      authenticatorAttachment: 'platform',
+      residentKey: 'preferred',
+      requireResidentKey: false,
+      userVerification: 'required',
+    },
     challenge = createChallenge,
     excludeCredentialIds,
     name: name_,
@@ -134,13 +155,8 @@ export function getCredentialCreationOptions(
   const name = (user?.name ?? name_)!
   return {
     publicKey: {
-      attestation: 'none',
-      authenticatorSelection: {
-        authenticatorAttachment: 'platform',
-        residentKey: 'preferred',
-        requireResidentKey: false,
-        userVerification: 'required',
-      },
+      attestation,
+      authenticatorSelection,
       challenge,
       ...(excludeCredentialIds
         ? {

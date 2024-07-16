@@ -32,6 +32,12 @@ describe('createCredential', () => {
       {
         "id": "m1-bMPuAqpWhCxHZQZTT6e-lSPntQbh3opIoGe7g4Qs",
         "publicKey": "0xab891400140fc4f8e941ce0ff90e419de9470acaca613bbd717a4775435031a7d884318e919fd3b3e5a631d866d8a380b44063e70f0c381ee16e0652f7f97554",
+        "raw": {
+          "id": "m1-bMPuAqpWhCxHZQZTT6e-lSPntQbh3opIoGe7g4Qs",
+          "response": {
+            "getPublicKey": [Function],
+          },
+        },
       }
     `)
     expect(options).toMatchInlineSnapshot(`

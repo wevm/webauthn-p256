@@ -3,6 +3,7 @@ export type Hex = `0x${string}`
 export type P256Credential = {
   id: string
   publicKey: Hex
+  raw: PublicKeyCredential
 }
 
 export type PublicKey = {
