@@ -1,5 +1,13 @@
 # webauthn-p256
 
+## 0.0.5
+
+### Patch Changes
+
+- [`11f84a8`](https://github.com/wevm/webauthn-p256/commit/11f84a821b241672fe83d2b464afca4be84b6bfc) Thanks [@jxom](https://github.com/jxom)! - Added `attestation` + `authenticatorSelection` as parameters to `createCredential`.
+
+- [`11f84a8`](https://github.com/wevm/webauthn-p256/commit/11f84a821b241672fe83d2b464afca4be84b6bfc) Thanks [@jxom](https://github.com/jxom)! - Added `raw` (full credential response) to the return value of `createCredential`.
+
 ## 0.0.4
 
 ### Patch Changes
