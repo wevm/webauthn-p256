@@ -70,7 +70,9 @@ type CredentialMediationRequirement =
 type PublicKeyCredentialType = 'public-key'
 type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required'
 type UserVerificationRequirement = 'discouraged' | 'preferred' | 'required'
-
+type LargeBlobSupport = {
+  support: 'required' | 'preferred';
+};
 type BufferSource = ArrayBufferView | ArrayBuffer
 type PrfExtension = {
   prf: {
@@ -85,6 +87,7 @@ interface AuthenticationExtensionsClientInputs {
   hmacCreateSecret?: boolean
   minPinLength?: boolean
   prf?: PrfExtension
+  largeBlob?: LargeBlobSupport
 }
 
 interface AuthenticatorSelectionCriteria {
