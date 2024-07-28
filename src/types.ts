@@ -77,10 +77,10 @@ type BufferSource = ArrayBufferView | ArrayBuffer
 type PrfExtension = {
   prf: {
     eval: {
-      first: Uint8Array;
-    };
-  };
-};
+      first: Uint8Array
+    }
+  }
+}
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
