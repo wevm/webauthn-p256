@@ -92,6 +92,10 @@ export type GetCredentialCreationOptionsParameters = {
    */
   excludeCredentialIds?: readonly string[] | undefined
   /**
+   * List of Web Authentication API credentials to use during creation or authentication.
+   */
+  extensions?: PublicKeyCredentialCreationOptions['extensions'] | undefined
+  /**
    * An object describing the relying party that requested the credential creation
    */
   rp?:
@@ -151,6 +155,7 @@ export function getCredentialCreationOptions(
       name: window.document.title,
     },
     user,
+    extensions
   } = parameters
   const name = (user?.name ?? name_)!
   return {
@@ -178,6 +183,7 @@ export function getCredentialCreationOptions(
         name,
         displayName: user?.displayName ?? name,
       },
+      extensions
     },
   } as CredentialCreationOptions
 }
