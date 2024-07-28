@@ -1,5 +1,11 @@
 # webauthn-p256
 
+## 0.0.6
+
+### Patch Changes
+
+- [`f8209ba`](https://github.com/wevm/webauthn-p256/commit/f8209ba69405411f21b228f11110ce5bab2b883e) Thanks [@jxom](https://github.com/jxom)! - Added support for `extensions`.
+
 ## 0.0.5
 
 ### Patch Changes
