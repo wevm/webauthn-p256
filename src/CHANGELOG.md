@@ -1,5 +1,11 @@
 # webauthn-p256
 
+## 0.0.7
+
+### Patch Changes
+
+- [`39626bc`](https://github.com/wevm/webauthn-p256/commit/39626bc7b6ea6fee6503f78a19e495b3e4bee7b5) Thanks [@jxom](https://github.com/jxom)! - Fixed prf type.
+
 ## 0.0.6
 
 ### Patch Changes
