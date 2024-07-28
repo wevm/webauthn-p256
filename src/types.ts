@@ -74,7 +74,7 @@ type LargeBlobSupport = {
   support: 'required' | 'preferred'
 }
 type BufferSource = ArrayBufferView | ArrayBuffer
-type PrfExtension =  Record<'eval', Record<'first', Uint8Array>>
+type PrfExtension = Record<'eval', Record<'first', Uint8Array>>
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
