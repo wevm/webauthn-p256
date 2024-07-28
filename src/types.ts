@@ -72,12 +72,19 @@ type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required'
 type UserVerificationRequirement = 'discouraged' | 'preferred' | 'required'
 
 type BufferSource = ArrayBufferView | ArrayBuffer
-
+type PrfExtension = {
+  prf: {
+    eval: {
+      first: Uint8Array;
+    };
+  };
+};
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
   hmacCreateSecret?: boolean
   minPinLength?: boolean
+  prf?: PrfExtension
 }
 
 interface AuthenticatorSelectionCriteria {
