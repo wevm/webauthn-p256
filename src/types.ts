@@ -71,8 +71,8 @@ type PublicKeyCredentialType = 'public-key'
 type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required'
 type UserVerificationRequirement = 'discouraged' | 'preferred' | 'required'
 type LargeBlobSupport = {
-  support: 'required' | 'preferred';
-};
+  support: 'required' | 'preferred'
+}
 type BufferSource = ArrayBufferView | ArrayBuffer
 
 interface AuthenticationExtensionsClientInputs {

@@ -155,7 +155,7 @@ export function getCredentialCreationOptions(
       name: window.document.title,
     },
     user,
-    extensions
+    extensions,
   } = parameters
   const name = (user?.name ?? name_)!
   return {
@@ -183,7 +183,7 @@ export function getCredentialCreationOptions(
         name,
         displayName: user?.displayName ?? name,
       },
-      extensions
+      extensions,
     },
   } as CredentialCreationOptions
 }
