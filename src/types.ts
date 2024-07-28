@@ -74,12 +74,19 @@ type LargeBlobSupport = {
   support: 'required' | 'preferred'
 }
 type BufferSource = ArrayBufferView | ArrayBuffer
-
+type PrfExtension = {
+  prf: {
+    eval: {
+      first: Uint8Array;
+    };
+  };
+};
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
   hmacCreateSecret?: boolean
   minPinLength?: boolean
+  prf?: PrfExtension
   largeBlob?: LargeBlobSupport
 }
 
