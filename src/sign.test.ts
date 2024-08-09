@@ -15,7 +15,7 @@ describe('sign', () => {
       getFn(options_) {
         options = options_
         return Promise.resolve({
-          id: "m1-bMPuAqpWhCxHZQZTT6e-lSPntQbh3opIoGe7g4Qs",
+          id: 'm1-bMPuAqpWhCxHZQZTT6e-lSPntQbh3opIoGe7g4Qs',
           response: {
             authenticatorData: [
               73, 150, 13, 229, 136, 14, 140, 104, 116, 52, 23, 15, 100, 118,
