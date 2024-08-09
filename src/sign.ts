@@ -25,6 +25,7 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
 export type SignReturnType = {
   signature: Hex
   webauthn: WebAuthnData
+  raw: PublicKeyCredential
 }
 
 /**
@@ -77,6 +78,7 @@ export async function sign(
         userVerificationRequired:
           options.publicKey!.userVerification === 'required',
       },
+      raw: credential,
     }
   } catch (error) {
     throw new Error('credential request failed.', { cause: error })
