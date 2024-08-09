@@ -25,6 +25,7 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
 export type SignReturnType = {
   signature: Hex
   webauthn: WebAuthnData
+  raw: PublicKeyCredential
 }
 
 /**
@@ -77,6 +78,7 @@ export async function sign(
         userVerificationRequired:
           options.publicKey!.userVerification === 'required',
       },
+      raw: credential,
     }
   } catch (error) {
     throw new Error('credential request failed.', { cause: error })
@@ -90,7 +92,9 @@ export type GetCredentialSignRequestOptionsParameters = {
    * The relying party identifier to use.
    */
   rpId?: PublicKeyCredentialRequestOptions['rpId'] | undefined
+
   userVerification?: PublicKeyCredentialRequestOptions['userVerification'] | undefined
+  
 }
 export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
 
@@ -107,7 +111,9 @@ export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
 export function getCredentialSignRequestOptions(
   parameters: GetCredentialSignRequestOptionsParameters,
 ): GetCredentialSignRequestOptionsReturnType {
+
   const { credentialId, hash, rpId = window.location.hostname, userVerification = 'required'} = parameters
+
   const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)))
   return {
     publicKey: {

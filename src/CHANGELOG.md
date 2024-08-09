@@ -1,5 +1,11 @@
 # webauthn-p256
 
+## 0.0.9
+
+### Patch Changes
+
+- [`11ee43e`](https://github.com/wevm/webauthn-p256/commit/11ee43e1cd7b358d47b59dae0c4ddd29941d1c23) Thanks [@jxom](https://github.com/jxom)! - Added `userVerification` as a parameter to `sign`.
+
 ## 0.0.8
 
 ### Patch Changes
