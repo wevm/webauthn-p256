@@ -117,7 +117,6 @@ export function getCredentialSignRequestOptions(
     rpId = window.location.hostname,
     userVerification = 'required',
   } = parameters
-
   const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)))
   return {
     publicKey: {
