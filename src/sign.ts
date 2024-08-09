@@ -92,7 +92,6 @@ export type GetCredentialSignRequestOptionsParameters = {
    * The relying party identifier to use.
    */
   rpId?: PublicKeyCredentialRequestOptions['rpId'] | undefined
-
   userVerification?: PublicKeyCredentialRequestOptions['userVerification'] | undefined
   
 }
@@ -112,7 +111,12 @@ export function getCredentialSignRequestOptions(
   parameters: GetCredentialSignRequestOptionsParameters,
 ): GetCredentialSignRequestOptionsReturnType {
 
-  const { credentialId, hash, rpId = window.location.hostname, userVerification = 'required'} = parameters
+  const { 
+    credentialId, 
+    hash, 
+    rpId = window.location.hostname, 
+    userVerification = 'required'
+  } = parameters
 
   const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)))
   return {
