@@ -1,5 +1,11 @@
 # webauthn-p256
 
+## 0.0.10
+
+### Patch Changes
+
+- [`54bd0dc`](https://github.com/wevm/webauthn-p256/commit/54bd0dce24736f9a3f97e07671baa18313fb8970) Thanks [@jxom](https://github.com/jxom)! - Added `raw` to `sign`.
+
 ## 0.0.9
 
 ### Patch Changes
