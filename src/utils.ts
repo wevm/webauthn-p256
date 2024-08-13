@@ -27,8 +27,10 @@ export function base64UrlToBase64(base64Url: string): string {
   return base64Url.replaceAll('-', '+').replaceAll('_', '/')
 }
 
-export function base64ToBase64Url(base64: string): string {
-  return base64.replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '')
+export function base64ToBase64Url(base64: string, { pad = true }: { pad?: boolean } = {}): string {
+  const base64Url = base64.replaceAll('+', '-').replaceAll('/', '_')
+  if (pad) return base64Url.replace(/=+$/, '')
+  return base64Url
 }
 
 export function base64ToUtf8(base64: string): string {
