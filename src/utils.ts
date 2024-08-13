@@ -29,7 +29,7 @@ export function base64UrlToBase64(base64Url: string): string {
 
 export function base64ToBase64Url(base64: string, { pad = true }: { pad?: boolean } = {}): string {
   const base64Url = base64.replaceAll('+', '-').replaceAll('/', '_')
-  if (pad) return base64Url.replace(/=+$/, '')
+  if (!pad) return base64Url.replace(/=+$/, '')
   return base64Url
 }
 
