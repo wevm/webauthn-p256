@@ -5,6 +5,7 @@ import {
 } from '@noble/hashes/utils'
 import { encodeAbiParameters, stringToHex } from 'viem'
 import type { Hash, Hex } from './types.js'
+import { Buffer } from 'buffer'
 
 export function bytesToHex(bytes: Uint8Array): Hex {
   return `0x${bytesToHex_noble(bytes)}`

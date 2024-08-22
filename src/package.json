@@ -1,7 +1,7 @@
 {
   "name": "@lukasrosario/webauthn-p256",
   "description": "P256 signature utilities for WebAuthn",
-  "version": "0.0.10-sessionkeys.1",
+  "version": "0.0.10-sessionkeys.2",
   "type": "module",
   "main": "./_cjs/index.js",
   "module": "./_esm/index.js",
@@ -18,7 +18,8 @@
   "dependencies": {
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
-    "viem": "^2.18.8"
+    "viem": "^2.18.8",
+    "buffer": "6.0.3"
   },
   "license": "MIT",
   "homepage": "https://wevm.dev",
