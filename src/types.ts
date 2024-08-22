@@ -1,10 +1,21 @@
 export type Hex = `0x${string}`
+export type Hash = `0x${string}`
 
-export type P256Credential = {
+export type CryptoKeyP256Credential = {
+  publicKey: Hex
+  privateKey: CryptoKey
+  sign: (hash: Hash) => Promise<Hex>
+}
+
+export type WebauthnP256Credential = {
   id: string
   publicKey: Hex
   raw: PublicKeyCredential
 }
+
+export type P256Credential<T> = T extends { type: 'webauthn' }
+  ? WebauthnP256Credential
+  : CryptoKeyP256Credential
 
 export type PublicKey = {
   prefix?: number | undefined

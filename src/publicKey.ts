@@ -59,3 +59,16 @@ export function serializePublicKey<to extends 'hex' | 'bytes' = 'hex'>(
   ])
   return (to === 'hex' ? bytesToHex(result) : result) as any
 }
+
+export async function exportPublicKey<to extends 'hex' | 'bytes' = 'hex'>(
+  publicKey: CryptoKey,
+  options: SerializePublicKeyOptions<to> = {},
+): Promise<to extends 'hex' ? Hex : Uint8Array> {
+  const { to = 'hex' } = options
+  const exported = await crypto.subtle.exportKey('jwk', publicKey)
+  const result = Uint8Array.from([
+    ...base64UrlToBytes(exported.x as string),
+    ...base64UrlToBytes(exported.y as string),
+  ])
+  return (to === 'hex' ? bytesToHex(result) : result) as any
+}
