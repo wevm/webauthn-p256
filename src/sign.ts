@@ -1,12 +1,24 @@
-import { numberToBytesBE } from '@noble/curves/abstract/utils'
-import { p256 } from '@noble/curves/p256'
-import type { Credential, Hex, Signature, WebAuthnData } from './types.js'
+import { numberToBytesBE } from "@noble/curves/abstract/utils";
+import { p256 } from "@noble/curves/p256";
+import type {
+  Credential,
+  Hex,
+  P256Credential,
+  Signature,
+  WebAuthnData,
+} from "./types.js";
 import {
+  authData,
   base64UrlToBytes,
   bytesToBase64Url,
   bytesToHex,
+  concatBytes,
+  formatCryptoKeySignature,
+  getClientDataJSON,
   hexToBytes,
-} from './utils.js'
+  sha256,
+} from "./utils.js";
+import type { Hash } from "viem";
 
 export type SignParameters = GetCredentialSignRequestOptionsParameters & {
   /**
@@ -17,16 +29,16 @@ export type SignParameters = GetCredentialSignRequestOptionsParameters & {
    */
   getFn?:
     | ((
-        options?: CredentialRequestOptions | undefined,
+        options?: CredentialRequestOptions | undefined
       ) => Promise<Credential | null>)
-    | undefined
-}
+    | undefined;
+};
 
 export type SignReturnType = {
-  signature: Hex
-  webauthn: WebAuthnData
-  raw: PublicKeyCredential
-}
+  signature: Hex;
+  webauthn: WebAuthnData;
+  raw: PublicKeyCredential;
+};
 
 /**
  * Signs a hash using a stored credential. If no credential is provided,
@@ -44,59 +56,60 @@ export type SignReturnType = {
  * ```
  */
 export async function sign(
-  parameters: SignParameters,
+  parameters: SignParameters
 ): Promise<SignReturnType> {
   const {
     getFn = window.navigator.credentials.get.bind(window.navigator.credentials),
     ...rest
-  } = parameters
-  const options = getCredentialSignRequestOptions(rest)
+  } = parameters;
+  const options = getCredentialSignRequestOptions(rest);
   try {
-    const credential = (await getFn(options)) as PublicKeyCredential
-    if (!credential) throw new Error('credential request failed.')
-    const response = credential.response as AuthenticatorAssertionResponse
+    const credential = (await getFn(options)) as PublicKeyCredential;
+    if (!credential) throw new Error("credential request failed.");
+    const response = credential.response as AuthenticatorAssertionResponse;
 
     const clientDataJSON = String.fromCharCode(
-      ...new Uint8Array(response.clientDataJSON),
-    )
-    const challengeIndex = clientDataJSON.indexOf('"challenge"')
-    const typeIndex = clientDataJSON.indexOf('"type"')
+      ...new Uint8Array(response.clientDataJSON)
+    );
+    const challengeIndex = clientDataJSON.indexOf('"challenge"');
+    const typeIndex = clientDataJSON.indexOf('"type"');
 
     const signature = parseAsn1Signature(
-      base64UrlToBytes(bytesToBase64Url(new Uint8Array(response.signature))),
-    )
+      base64UrlToBytes(bytesToBase64Url(new Uint8Array(response.signature)))
+    );
 
     return {
       signature: serializeSignature(signature),
       webauthn: {
         authenticatorData: bytesToHex(
-          new Uint8Array(response.authenticatorData),
+          new Uint8Array(response.authenticatorData)
         ),
         clientDataJSON,
         challengeIndex,
         typeIndex,
         userVerificationRequired:
-          options.publicKey!.userVerification === 'required',
+          options.publicKey!.userVerification === "required",
       },
       raw: credential,
-    }
+    };
   } catch (error) {
-    throw new Error('credential request failed.', { cause: error })
+    throw new Error("credential request failed.", { cause: error });
   }
 }
 
 export type GetCredentialSignRequestOptionsParameters = {
-  credentialId?: string | undefined
-  hash: Hex
+  credentialId?: string | undefined;
+  hash: Hex;
   /**
    * The relying party identifier to use.
    */
-  rpId?: PublicKeyCredentialRequestOptions['rpId'] | undefined
+  rpId?: PublicKeyCredentialRequestOptions["rpId"] | undefined;
   userVerification?:
-    | PublicKeyCredentialRequestOptions['userVerification']
-    | undefined
-}
-export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
+    | PublicKeyCredentialRequestOptions["userVerification"]
+    | undefined;
+};
+export type GetCredentialSignRequestOptionsReturnType =
+  CredentialRequestOptions;
 
 /**
  * Returns the request options to sign a hash using a stored credential
@@ -109,15 +122,15 @@ export type GetCredentialSignRequestOptionsReturnType = CredentialRequestOptions
  * ```
  */
 export function getCredentialSignRequestOptions(
-  parameters: GetCredentialSignRequestOptionsParameters,
+  parameters: GetCredentialSignRequestOptionsParameters
 ): GetCredentialSignRequestOptionsReturnType {
   const {
     credentialId,
     hash,
     rpId = window.location.hostname,
-    userVerification = 'required',
-  } = parameters
-  const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)))
+    userVerification = "required",
+  } = parameters;
+  const challenge = base64UrlToBytes(bytesToBase64Url(hexToBytes(hash)));
   return {
     publicKey: {
       ...(credentialId
@@ -125,7 +138,7 @@ export function getCredentialSignRequestOptions(
             allowCredentials: [
               {
                 id: base64UrlToBytes(credentialId),
-                type: 'public-key',
+                type: "public-key",
               },
             ],
           }
@@ -134,7 +147,7 @@ export function getCredentialSignRequestOptions(
       rpId,
       userVerification,
     },
-  }
+  };
 }
 
 /**
@@ -142,18 +155,18 @@ export function getCredentialSignRequestOptions(
  * Parses an ASN.1 signature into a r and s value.
  */
 export function parseAsn1Signature(bytes: Uint8Array) {
-  const r_start = bytes[4] === 0 ? 5 : 4
-  const r_end = r_start + 32
-  const s_start = bytes[r_end + 2] === 0 ? r_end + 3 : r_end + 2
+  const r_start = bytes[4] === 0 ? 5 : 4;
+  const r_end = r_start + 32;
+  const s_start = bytes[r_end + 2] === 0 ? r_end + 3 : r_end + 2;
 
-  const r = BigInt(bytesToHex(bytes.slice(r_start, r_end)))
-  const s = BigInt(bytesToHex(bytes.slice(s_start)))
-  const n = p256.CURVE.n
+  const r = BigInt(bytesToHex(bytes.slice(r_start, r_end)));
+  const s = BigInt(bytesToHex(bytes.slice(s_start)));
+  const n = p256.CURVE.n;
 
   return {
     r,
     s: s > n / 2n ? n - s : s,
-  }
+  };
 }
 
 /**
@@ -161,30 +174,51 @@ export function parseAsn1Signature(bytes: Uint8Array) {
  */
 export function parseSignature(signature: Hex | Uint8Array): Signature {
   const bytes =
-    typeof signature === 'string' ? hexToBytes(signature) : signature
-  const r = bytes.slice(0, 32)
-  const s = bytes.slice(32, 64)
+    typeof signature === "string" ? hexToBytes(signature) : signature;
+  const r = bytes.slice(0, 32);
+  const s = bytes.slice(32, 64);
   return {
     r: BigInt(bytesToHex(r)),
     s: BigInt(bytesToHex(s)),
-  }
+  };
 }
 
-export type SerializeSignatureOptions<to extends 'hex' | 'bytes' = 'hex'> = {
-  to?: to | 'bytes' | 'hex' | undefined
-}
+export type SerializeSignatureOptions<to extends "hex" | "bytes" = "hex"> = {
+  to?: to | "bytes" | "hex" | undefined;
+};
 
 /**
  * Serializes a signature into a hex string or bytes.
  */
-export function serializeSignature<to extends 'hex' | 'bytes' = 'hex'>(
+export function serializeSignature<to extends "hex" | "bytes" = "hex">(
   signature: Signature,
-  options: SerializeSignatureOptions<to> = {},
-): to extends 'hex' ? Hex : Uint8Array {
-  const { to = 'hex' } = options
+  options: SerializeSignatureOptions<to> = {}
+): to extends "hex" ? Hex : Uint8Array {
+  const { to = "hex" } = options;
   const result = new Uint8Array([
     ...numberToBytesBE(signature.r, 32),
     ...numberToBytesBE(signature.s, 32),
-  ])
-  return (to === 'hex' ? bytesToHex(result) : result) as any
+  ]);
+  return (to === "hex" ? bytesToHex(result) : result) as any;
+}
+
+export function signWithCredential(
+  credential: P256Credential<"cryptokey">
+): (hash: Hash) => Promise<`0x${string}`> {
+  return async (hash: Hash) => {
+    const clientDataJSON = getClientDataJSON(hash);
+    const clientDataJSONHash = sha256(
+      base64UrlToBytes(clientDataJSON),
+      "bytes"
+    );
+
+    const webauthnHash = concatBytes([authData, clientDataJSONHash]);
+    const signature = await crypto.subtle.sign(
+      { name: "ECDSA", hash: "SHA-256" },
+      credential.privateKey,
+      webauthnHash
+    );
+
+    return formatCryptoKeySignature({ signature, clientDataJSON });
+  };
 }
