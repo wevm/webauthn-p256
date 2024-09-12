@@ -23,6 +23,7 @@ export {
   sign,
   parseSignature,
   serializeSignature,
+  signWithCredential
 } from './sign.js'
 
 export type {
