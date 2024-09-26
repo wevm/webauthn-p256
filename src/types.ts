@@ -78,6 +78,8 @@ type PrfExtension = Record<'eval', Record<'first', Uint8Array>>
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
+  credentialProtectionPolicy?: 'userVerificationOptional' | 'userVerificationOptionalWithCredentialIDList' | 'userVerificationRequired'
+  enforceCredentialProtectionPolicy?: boolean
   hmacCreateSecret?: boolean
   minPinLength?: boolean
   prf?: PrfExtension
