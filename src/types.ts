@@ -116,12 +116,15 @@ export interface PublicKeyCredential extends Credential {
   getClientExtensionResults(): AuthenticationExtensionsClientOutputs
 }
 
+export type PublicKeyCredentialHints = 'security-key' | 'client-device' | 'hybrid'
+
 export interface PublicKeyCredentialCreationOptions {
   attestation?: AttestationConveyancePreference
   authenticatorSelection?: AuthenticatorSelectionCriteria
   challenge: BufferSource
   excludeCredentials?: PublicKeyCredentialDescriptor[]
   extensions?: AuthenticationExtensionsClientInputs
+  hints?: PublicKeyCredentialHints[]
   pubKeyCredParams: PublicKeyCredentialParameters[]
   rp: PublicKeyCredentialRpEntity
   timeout?: number
