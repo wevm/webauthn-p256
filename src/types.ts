@@ -78,6 +78,8 @@ type PrfExtension = Record<'eval', Record<'first', Uint8Array>>
 interface AuthenticationExtensionsClientInputs {
   appid?: string
   credProps?: boolean
+  credentialProtectionPolicy?: 'userVerificationOptional' | 'userVerificationOptionalWithCredentialIDList' | 'userVerificationRequired'
+  enforceCredentialProtectionPolicy?: boolean
   hmacCreateSecret?: boolean
   minPinLength?: boolean
   prf?: PrfExtension
@@ -114,12 +116,15 @@ export interface PublicKeyCredential extends Credential {
   getClientExtensionResults(): AuthenticationExtensionsClientOutputs
 }
 
+export type PublicKeyCredentialHints = 'security-key' | 'client-device' | 'hybrid'
+
 export interface PublicKeyCredentialCreationOptions {
   attestation?: AttestationConveyancePreference
   authenticatorSelection?: AuthenticatorSelectionCriteria
   challenge: BufferSource
   excludeCredentials?: PublicKeyCredentialDescriptor[]
   extensions?: AuthenticationExtensionsClientInputs
+  hints?: PublicKeyCredentialHints[]
   pubKeyCredParams: PublicKeyCredentialParameters[]
   rp: PublicKeyCredentialRpEntity
   timeout?: number

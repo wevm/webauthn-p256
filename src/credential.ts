@@ -96,6 +96,11 @@ export type GetCredentialCreationOptionsParameters = {
    */
   extensions?: PublicKeyCredentialCreationOptions['extensions'] | undefined
   /**
+   * List of hints to specify UI preferences for creating a passkey or authenticating with a passkey.
+   * https://developer.chrome.com/blog/passkeys-updates-chrome-129#hints
+   */
+  hints?: PublicKeyCredentialCreationOptions['hints'] | undefined
+  /**
    * An object describing the relying party that requested the credential creation
    */
   rp?:
@@ -148,6 +153,7 @@ export function getCredentialCreationOptions(
       userVerification: 'required',
     },
     challenge = createChallenge,
+    hints = [],
     excludeCredentialIds,
     name: name_,
     rp = {
@@ -171,6 +177,7 @@ export function getCredentialCreationOptions(
             })),
           }
         : {}),
+      hints,
       pubKeyCredParams: [
         {
           type: 'public-key',
