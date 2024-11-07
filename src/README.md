@@ -1,3 +1,6 @@
+> [!WARNING]
+> This library is no longer maintained. Please use the [`WebAuthnP256` module from Ox](https://oxlib.sh/api/WebAuthnP256) instead.
+
 <br/>
 
 <p align="center">
